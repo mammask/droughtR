@@ -1,0 +1,21 @@
+Package: droughtr
+Title: Reduced Bias Drought Forecasting Framework
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Konstantinos",
+           family = "Mammas",
+           role = c("aut", "cre"),
+           email = "mammas_k@live.com",
+           comment = c(ORCID = "0000-0003-4972-1709"))
+Description: This package reduces the bias due to incorrect calculation of the Standardized Precipitation Index (SPI) in drought forecasting applications.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Depends:
+    data.table,
+    zoo,
+    gamlss,
+    gamlss.dist,
+    SPEI
