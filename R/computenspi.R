@@ -80,5 +80,8 @@ computenspi = function(monthlyRainfall, stationary, spiScale){
     # Calculate NSPI
     monthlyRainfall[stats::complete.cases(monthlyRainfall), NSPI := qnorm(ecdfm)][]
   }
+
+  class(monthlyRainfall) = c("drought", class(monthlyRainfall))
+
   return(monthlyRainfall)
 }

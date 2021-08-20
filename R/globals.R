@@ -1,3 +1,4 @@
 utils::globalVariables(c("Rainfall","Date","SPI",
                          "NSPI","AccumPrecip","Trend",
-                         "mu","sigma","ecdfm","."))
+                         "mu","sigma","ecdfm",".",
+                         "plot.drought"))
