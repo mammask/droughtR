@@ -34,4 +34,4 @@ drought = computenspi(monthlyRainfall = rain, stationary = FALSE, spiScale = 12)
 plot(drought)
 ```
 
-[]("README_files/figure-gfm/unnamed-chunk-2-1.png")
+[]("\<README_files/figure-gfm/unnamed-chunk-2-1.png\>\#\<10\>x\<10\>")
