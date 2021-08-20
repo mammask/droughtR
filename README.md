@@ -31,15 +31,16 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 drought = computenspi(monthlyRainfall = rain, stationary = FALSE, spiScale = 12)
 ```
 
-    ## GAMLSS-RS iteration 1: Global Deviance = 3425.403 
-    ## GAMLSS-RS iteration 2: Global Deviance = 3425.351 
-    ## GAMLSS-RS iteration 3: Global Deviance = 3425.351
+    ## GAMLSS-RS iteration 1: Global Deviance = 3477.976 
+    ## GAMLSS-RS iteration 2: Global Deviance = 3477.959 
+    ## GAMLSS-RS iteration 3: Global Deviance = 3477.959
 
 ``` r
 # Plot NSPI
 plot(drought)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-3-1.png)<!-- -->
 
-[](%22%3CREADME_files/figure-gfm/unnamed-chunk-2-1.png%3E#%3C10%3Ex%3C10%3E%22)
+[](%22%3CREADME_files/figure-gfm/unnamed-chunk-2-1.png%3E#%3C5%3Ex%3C5%3E%22)
+<!--#  -->

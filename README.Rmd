@@ -11,6 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 droughtr is an R for package that enables drought monitoring and drought forecasting. It computes the Standardized Precipitation Index (SPI) and the Non-Standardized Precipitation Index (NSPI) using General Additive Models for Location Scale and Shape (GAMLSS). It enables the generation of drought forecasts for univariate time series and deals with the bias introduced to drought forecasting applications when SPI and NSPI are calculated incorrectly during out-of-sample (OOS) validation.
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  fig.path = "README_figs/README-"
+)
+```
+
 ## Installation
 
 ```{r, eval=FALSE}
@@ -20,7 +26,7 @@ devtools::install_github("mammask/droughtr")
 
 ## Usage
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, fig.height=3, fig.width=5}
 # Load droughtr library
 library(droughtr)
 
@@ -34,4 +40,4 @@ drought = computenspi(monthlyRainfall = rain, stationary = FALSE, spiScale = 12)
 plot(drought)
 ```
 
-[]("\<README_files/figure-gfm/unnamed-chunk-2-1.png\>\#\<10\>x\<10\>")
+[]("\<README_files/figure-gfm/unnamed-chunk-2-1.png\>\#\<5\>x\<5\>") <!--#  -->
