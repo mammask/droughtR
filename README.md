@@ -33,8 +33,9 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 drought = computenspi(monthlyRainfall = rain, stationary = FALSE, spiScale = 12)
 ```
 
-    ## GAMLSS-RS iteration 1: Global Deviance = 3351.123 
-    ## GAMLSS-RS iteration 2: Global Deviance = 3351.123
+    ## GAMLSS-RS iteration 1: Global Deviance = 3490.23 
+    ## GAMLSS-RS iteration 2: Global Deviance = 3489.835 
+    ## GAMLSS-RS iteration 3: Global Deviance = 3489.835
 
 ``` r
 # Plot NSPI
@@ -54,30 +55,30 @@ rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0
 print(rain)
 ```
 
-    ##          Date Rainfall AccumPrecip Trend       mu      sigma     ecdfm
-    ##   1: Jan 1950 8.963740          NA    NA       NA         NA        NA
-    ##   2: Feb 1950 6.842699          NA    NA       NA         NA        NA
-    ##   3: Mar 1950 9.733336          NA    NA       NA         NA        NA
-    ##   4: Apr 1950 9.281883          NA    NA       NA         NA        NA
-    ##   5: May 1950 5.991393          NA    NA       NA         NA        NA
-    ##  ---                                                                  
-    ## 606: Jul 2010 6.596219    95.75331   595 94.44552 0.04640350 0.6226657
-    ## 607: Aug 2010 8.370766    97.19793   596 94.44070 0.04642140 0.7383734
-    ## 608: Sep 2010 6.576684    93.82330   597 94.43589 0.04643931 0.4504604
-    ## 609: Oct 2010 7.930722    93.67659   598 94.43107 0.04645722 0.4376445
-    ## 610: Nov 2010 7.884576    93.43627   599 94.42626 0.04647514 0.4164924
-    ##            NSPI Split
-    ##   1:         NA  <NA>
-    ##   2:         NA  <NA>
-    ##   3:         NA  <NA>
-    ##   4:         NA  <NA>
-    ##   5:         NA  <NA>
-    ##  ---                 
-    ## 606:  0.3124895  Test
-    ## 607:  0.6383388  Test
-    ## 608: -0.1244981  Test
-    ## 609: -0.1569439  Test
-    ## 610: -0.2108750  Test
+    ##          Date  Rainfall AccumPrecip Trend       mu      sigma     ecdfm
+    ##   1: Jan 1950  6.965374          NA    NA       NA         NA        NA
+    ##   2: Feb 1950  8.866148          NA    NA       NA         NA        NA
+    ##   3: Mar 1950  6.760097          NA    NA       NA         NA        NA
+    ##   4: Apr 1950  9.586144          NA    NA       NA         NA        NA
+    ##   5: May 1950 10.345658          NA    NA       NA         NA        NA
+    ##  ---                                                                   
+    ## 606: Jul 2010  8.310440    94.50662   595 96.78736 0.05924498 0.3515557
+    ## 607: Aug 2010  8.015038    94.49980   596 96.78874 0.05929471 0.3511495
+    ## 608: Sep 2010  9.802627    96.69054   597 96.79013 0.05934449 0.5009733
+    ## 609: Oct 2010  6.603372    95.78891   598 96.79152 0.05939430 0.4383357
+    ## 610: Nov 2010  5.848476    94.46632   599 96.79291 0.05944416 0.3490868
+    ##              NSPI Split
+    ##   1:           NA  <NA>
+    ##   2:           NA  <NA>
+    ##   3:           NA  <NA>
+    ##   4:           NA  <NA>
+    ##   5:           NA  <NA>
+    ##  ---                   
+    ## 606: -0.381123905  Test
+    ## 607: -0.382218831  Test
+    ## 608:  0.002439664  Test
+    ## 609: -0.155190163  Test
+    ## 610: -0.387787221  Test
 
 #### Bias measurement
 
@@ -94,6 +95,11 @@ computed using the training data only; we call this as “Bias Corrected”
 computation and 2) SPI is computed using the entire data; we call this
 as “Bias Induced” computation.
 
+We measure bias by computing the number of miss-classifications in the
+training set due to the incorrect computation of the index. We also
+measure the number of records impacted and share a plot of the two
+computational approaches.
+
 ``` r
 # Generate synthetic monthly rainfall data using the Gamma distribution
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
@@ -105,21 +111,20 @@ bias
 
     ## $Transitions
     ##     Bias Corrected Class Bias Induced Class   N
-    ##  1:          Near Normal        Near Normal 227
-    ##  2:       Moderately Dry        Near Normal  17
-    ##  3:       Moderately Wet        Near Normal  15
-    ##  4:       Moderately Wet     Moderately Wet  24
-    ##  5:             Very Wet           Very Wet  12
-    ##  6:        Extremely Wet      Extremely Wet   3
-    ##  7:        Extremely Wet           Very Wet   8
-    ##  8:             Very Dry     Moderately Dry   6
-    ##  9:             Very Dry           Very Dry   9
-    ## 10:        Extremely Dry           Very Dry   6
-    ## 11:       Moderately Dry     Moderately Dry  22
-    ## 12:             Very Wet     Moderately Wet   6
+    ##  1:       Moderately Wet        Near Normal   7
+    ##  2:       Moderately Wet     Moderately Wet  38
+    ##  3:             Very Wet     Moderately Wet  12
+    ##  4:             Very Wet           Very Wet  12
+    ##  5:        Extremely Wet           Very Wet   2
+    ##  6:          Near Normal        Near Normal 219
+    ##  7:       Moderately Dry     Moderately Dry  39
+    ##  8:             Very Dry           Very Dry  13
+    ##  9:       Moderately Dry        Near Normal   5
+    ## 10:             Very Dry     Moderately Dry   3
+    ## 11:        Extremely Dry      Extremely Dry   5
     ## 
     ## $`Impacted Records`
-    ## [1] "16.34% of records changed drought class"
+    ## [1] "8.17% of records changed drought class"
     ## 
     ## $Plot
 

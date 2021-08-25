@@ -59,6 +59,8 @@ When the Standardized Precipitation Index is calculated as part of a forecasting
 
 In this section, we compute the amount of bias introduced to the training set by measuring the number of miss-classifications in the training data. Two computational approaches are presented: 1) SPI is computed using the training data only; we call this as "Bias Corrected" computation and 2) SPI is computed using the entire data; we call this as "Bias Induced" computation. 
 
+We measure bias by computing the number of miss-classifications in the training set due to the incorrect computation of the index. We also measure the number of records impacted and share a plot of the two computational approaches.
+
 ```{r, eval=TRUE}
 # Generate synthetic monthly rainfall data using the Gamma distribution
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
