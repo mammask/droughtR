@@ -1,5 +1,5 @@
 ---
-title: "doughtr"
+title: "droughtr"
 output: github_document
 ---
 
@@ -26,6 +26,8 @@ devtools::install_github("mammask/droughtr")
 
 ## Usage
 
+### Generate SPI and NSPI
+
 ```{r, eval=TRUE, fig.height=3, fig.width=5}
 # Load droughtr library
 library(droughtr)
@@ -40,4 +42,28 @@ drought = computenspi(monthlyRainfall = rain, stationary = FALSE, spiScale = 12)
 plot(drought)
 ```
 
-[]("\<README_files/figure-gfm/unnamed-chunk-2-1.png\>\#\<5\>x\<5\>") <!--#  -->
+### Reduced-Bias forecasting framework
+
+#### Data Split
+
+Split the rainfall series into training validation and test set.
+
+```{r, eval=TRUE}
+rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2)
+print(rain)
+```
+
+#### Bias measurement
+
+When the Standardized Precipitation Index is calculated as part of a forecasting task it can potentially introduce biases in the training data. This is mainly because in many cases the index is computed using the entire data, prior to model validation, and this violates some of the fundamental principles of time series forecasting theory.
+
+In this section, we compute the amount of bias introduced to the training set by measuring the number of miss-classifications in the training data. Two computational approaches are presented: 1) SPI is computed using the training data only; we call this as "Bias Corrected" computation and 2) SPI is computed using the entire data; we call this as "Bias Induced" computation. 
+
+```{r, eval=TRUE}
+# Generate synthetic monthly rainfall data using the Gamma distribution
+rain = dummyrainfall(startYear = 1950, endYear = 2010)
+
+# Compute bias
+bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationary = TRUE, spiscale = 12)
+bias
+```

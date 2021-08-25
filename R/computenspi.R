@@ -1,6 +1,6 @@
 #' computenspi
 #'
-#' Compute the stationary and non-stationary version of the Standardized Precipitation Index.
+#' Computes the stationary and non-stationary version of the Standardized Precipitation Index.
 #'  The non-stationary version uses GAMLSS and models the parameters of a Gamma distribution
 #'  by incorporating the trend of accumulated precipitation.
 #'
@@ -37,6 +37,8 @@ computenspi = function(monthlyRainfall, stationary, spiScale){
   if (monthlyRainfall[,class(Date)] != "yearmon"){
     stop("Date should be in yearmon format")
   }
+
+  setDT(monthlyRainfall)
 
   if (stationary == TRUE){
 

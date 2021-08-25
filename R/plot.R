@@ -22,6 +22,8 @@ plot.drought = function(x,label=TRUE, log=TRUE, type = "drought", ...){
     droughtindex = "NSPI"
   }
 
+  setDT(x)
+
   ggplot2::ggplot(data = x[stats::complete.cases(x)]) +
     geom_bar(aes(x = Date, y = eval(parse(text = droughtindex))),
              position = "dodge",

@@ -17,7 +17,7 @@ computenspi(monthlyRainfall, stationary, spiScale)
 data.table
 }
 \description{
-Compute the stationary and non-stationary version of the Standardized Precipitation Index.
+Computes the stationary and non-stationary version of the Standardized Precipitation Index.
 The non-stationary version uses GAMLSS and models the parameters of a Gamma distribution
 by incorporating the trend of accumulated precipitation.
 }
