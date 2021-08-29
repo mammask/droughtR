@@ -1,12 +1,14 @@
 #' bcoosautoarima
 #'
+#' Fits a bias-corrected auto.arima to forecast the standardized precipitation index
+#'
 #' @param x data.table
-#' @param trainratio numeric value represents the proportion of the training set
-#' @param validationratio numeric value represents the proportion of the validation set
-#' @param testratio numeric value represents the proportion of the test set
-#' @param stationaryspi logical when TRUE SPI is calculated; when FALSE NSPI is calculated
-#' @param spiscale numeric the scale of the index
-#' @param ... construct that relates to the inputs of forecast::auto.arima
+#' @param trainratio Numeric value represents the proportion of the training set
+#' @param validationratio Numeric value represents the proportion of the validation set
+#' @param testratio Numeric value represents the proportion of the test set
+#' @param stationaryspi Logical when TRUE SPI is calculated; when FALSE NSPI is calculated
+#' @param spiscale Numeric value that reflects the scale of the index
+#' @param ... Additional arguments that relate to the inputs of forecast::auto.arima
 #' @import data.table ggplot2 zoo MLmetrics
 #' @importFrom utils sessionInfo
 #' @importFrom data.table := .N set
@@ -15,7 +17,7 @@
 #' @return list with evaluation metrics and diagnostic plots
 #' @export
 #'
-#' @examples x= dummyrainfall(start = 1950, end = 2020)
+#' @examples x = dummyrainfall(start = 1950, end = 2020)
 #' bcoosautoarima(x, 0.8, 0, 0.2, TRUE, 12, seasonal = FALSE)
 bcoosautoarima = function(x, trainratio, validationratio = 0, testratio, stationaryspi, spiscale, ...){
 
@@ -33,6 +35,7 @@ bcoosautoarima = function(x, trainratio, validationratio = 0, testratio, station
   rain = copy(oossplit(x, trainratio, validationratio = 0, testratio))
 
   # Compute (N)SPI
+  print("Calculating the drought index")
   drought = computenspi(rain[Split == 'Train'], stationaryspi, spiscale)
   drought = drought[complete.cases(drought)]
 
@@ -43,6 +46,7 @@ bcoosautoarima = function(x, trainratio, validationratio = 0, testratio, station
   )
 
   # Fit an auto.arima in the training set
+  print("Training and selecting the best model in the training set...")
   modeltrain = forecast::auto.arima(y = nspitrain, ...)
 
   # Obtain fitted values in the training set
@@ -102,7 +106,7 @@ bcoosautoarima = function(x, trainratio, validationratio = 0, testratio, station
   actual = c()
   pred   = c()
   pb = utils::txtProgressBar(min = idstart, max = idend+1, style = 3, width = 100)
-
+  print("Initiating sequential index calculation, mmodel update and prediction")
   for (idx in idstart:c(idend+1)){
     utils::setTxtProgressBar(pb, idx)
     droughtupd = computenspi(monthlyRainfall = rain[id <= idx], stationaryspi, spiscale)
@@ -124,6 +128,7 @@ bcoosautoarima = function(x, trainratio, validationratio = 0, testratio, station
     }
   }
   close(pb)
+  print("Model evaluation in test set complete")
 
   # Obtain Model Forecasts in the test set
   evaltestset = data.table(Date = rain[Split == 'Test',Date],
@@ -169,5 +174,5 @@ bcoosautoarima = function(x, trainratio, validationratio = 0, testratio, station
   diagResults[['Residuals Density Test']] = forecast::autoplot(modeltest$residuals) +
     ylab("Residuals") + xlab("Date") + theme_light()
 
-  return(list("Diagnostics" = diagResults, "Prediction Test Set" = evaltestset))
+  return(list("Diagnostics" = diagResults, "Prediction Test Set" = evaltestset, "Model" = modeltrain))
 }

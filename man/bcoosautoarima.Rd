@@ -17,25 +17,25 @@ bcoosautoarima(
 \arguments{
 \item{x}{data.table}
 
-\item{trainratio}{numeric value represents the proportion of the training set}
+\item{trainratio}{Numeric value represents the proportion of the training set}
 
-\item{validationratio}{numeric value represents the proportion of the validation set}
+\item{validationratio}{Numeric value represents the proportion of the validation set}
 
-\item{testratio}{numeric value represents the proportion of the test set}
+\item{testratio}{Numeric value represents the proportion of the test set}
 
-\item{stationaryspi}{logical when TRUE SPI is calculated; when FALSE NSPI is calculated}
+\item{stationaryspi}{Logical when TRUE SPI is calculated; when FALSE NSPI is calculated}
 
-\item{spiscale}{numeric the scale of the index}
+\item{spiscale}{Numeric value that reflects the scale of the index}
 
-\item{...}{construct that relates to the inputs of forecast::auto.arima}
+\item{...}{Additional arguments that relate to the inputs of forecast::auto.arima}
 }
 \value{
 list with evaluation metrics and diagnostic plots
 }
 \description{
-bcoosautoarima
+Fits a bias-corrected auto.arima to forecast the standardized precipitation index
 }
 \examples{
-x= dummyrainfall(start = 1950, end = 2020)
+x = dummyrainfall(start = 1950, end = 2020)
 bcoosautoarima(x, 0.8, 0, 0.2, TRUE, 12, seasonal = FALSE)
 }
