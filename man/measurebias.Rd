@@ -4,7 +4,7 @@
 \alias{measurebias}
 \title{measurebias}
 \usage{
-measurebias(x, trainratio, validationratio, testratio, stationary, spiscale)
+measurebias(x, trainratio, validationratio, testratio, stationaryspi, spiscale)
 }
 \arguments{
 \item{x}{data.table with rainfall records (Date, Rainfall)}
@@ -15,7 +15,7 @@ measurebias(x, trainratio, validationratio, testratio, stationary, spiscale)
 
 \item{testratio}{numeric; the proportion of the test set}
 
-\item{stationary}{logical; TRUE is SPI is calculated and FALSE if NSPI is calculated}
+\item{stationaryspi}{logical; When TRUE SPI is calculated; when FALSE NSPI is calculated}
 
 \item{spiscale}{integer; the scale of accumulated precipitation}
 }

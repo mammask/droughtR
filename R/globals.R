@@ -5,4 +5,5 @@ utils::globalVariables(c("Rainfall","Date","SPI",
                          "trainsize", "validsize","testsize",
                          "status", "fillnas", "type", "Status",
                          "Bias Corrected Class", "Bias Corrected",
-                         "N", "Bias Induced Class", "Bias Induced"))
+                         "N", "Bias Induced Class", "Bias Induced",
+                         "Fitted","id"))

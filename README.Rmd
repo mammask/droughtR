@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       collapse = TRUE,
                       comment = "#>",
                       fig.path = "man/figures/README-"
-                      )
+)
 ```
 
 <img src="https://raw.githubusercontent.com/mammask/droughtr/main/man/figures/droughtR.png" align = "right" width = 120/>
@@ -40,7 +40,7 @@ library(droughtr)
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
-drought = computenspi(monthlyRainfall = rain, stationary = FALSE, spiScale = 12)
+drought = computenspi(monthlyRainfall = rain, stationaryspi = FALSE, spiScale = 12)
 
 # Plot NSPI
 plot(drought)
@@ -70,6 +70,40 @@ We measure bias by computing the number of miss-classifications in the training 
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute bias
-bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationary = TRUE, spiscale = 12)
+bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12)
 bias
 ```
+
+#### Bias Corrected auto.arima
+
+In this section, we perform out-of-sample validation using a bias corrected auto.arima to forecast the Standardized Precipitation Index (SPI).
+
+```{r, eval=TRUE, fig.height=3, fig.width=5}
+# out-of-sample validation using a bias corrected auto.arima
+model = bcoosautoarima(x = rain,
+                       trainratio = 0.8,
+                       validationratio = 0.0,
+                       testratio = 0.2,
+                       stationaryspi = TRUE,
+                       spiscale = 12,
+                       seasonal = FALSE)
+```
+
+The model returns a set of diagnostics and analytical outcomes, including the model description, diagnostics plots and actual vs. predicted forecasts.
+
+```{r, eval=TRUE, fig.height=3, fig.width=5, echo = TRUE}
+# Return the model description
+model[['Diagnostics']][['Model Description']]
+```
+
+Actual vs. predicted SPI in the test set
+
+```{r, eval=TRUE, fig.height=3, fig.width=5, echo = TRUE}
+model[['Diagnostics']][['Actual vs Predicted Test']]
+```
+
+Additional models are developed and can be found here:
+
+* Bias corrected modwt auto.arima
+* Bias corrected Support Vector Regression
+* Bias corrected modwt support vector regression

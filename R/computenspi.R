@@ -5,20 +5,21 @@
 #'  by incorporating the trend of accumulated precipitation.
 #'
 #' @param monthlyRainfall data.table
-#' @param stationary logical
+#' @param stationaryspi logical
 #' @param spiScale numeric
 #'
-#' @import data.table gamlss gamlss.dist SPEI
+#' @import data.table SPEI
 #' @importFrom utils sessionInfo
 #' @importFrom data.table := .N
-#'
+#' @importFrom gamlss gamlss
+#' @importFrom gamlss.dist GA
 #' @return data.table
 #' @export
 #'
-#' @examples computenspi(monthlyRainfall = dummyrainfall(1950, 2000), stationary = TRUE, spiScale = 12)
-computenspi = function(monthlyRainfall, stationary, spiScale){
+#' @examples computenspi(monthlyRainfall = dummyrainfall(1950, 2000), stationaryspi = TRUE, spiScale = 12)
+computenspi = function(monthlyRainfall, stationaryspi, spiScale){
 
-  if (class(stationary) != "logical"){
+  if (class(stationaryspi) != "logical"){
     stop("stationarity should be of logical type")
   }
 
@@ -40,7 +41,7 @@ computenspi = function(monthlyRainfall, stationary, spiScale){
 
   setDT(monthlyRainfall)
 
-  if (stationary == TRUE){
+  if (stationaryspi == TRUE){
 
     mts = ts(data = monthlyRainfall[,Rainfall],
               start = monthlyRainfall[,min(Date)],

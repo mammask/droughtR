@@ -29,7 +29,9 @@ oossplit = function(x, trainratio, validationratio, testratio){
   status = rep(NA, times = x[complete.cases(x),.N])
 
   status[1:trainsize] = "Train"
-  status[(trainsize+1):(trainsize+validsize)] = "Validation"
+  if (validsize>0){
+    status[(trainsize+1):(trainsize+validsize)] = "Validation"
+  }
   status[(trainsize+validsize+1):length(status)] = "Test"
 
   fillnas = copy(x[!complete.cases(x),.N])

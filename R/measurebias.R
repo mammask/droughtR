@@ -6,7 +6,7 @@
 #' @param trainratio numeric; the proportion of the train set
 #' @param validationratio numeric; the proportion of the validation set
 #' @param testratio  numeric; the proportion of the test set
-#' @param stationary logical; TRUE is SPI is calculated and FALSE if NSPI is calculated
+#' @param stationaryspi logical; When TRUE SPI is calculated; when FALSE NSPI is calculated
 #' @param spiscale integer; the scale of accumulated precipitation
 #' @import data.table ggplot2 gamlss gamlss.dist SPEI
 #' @importFrom data.table := .N
@@ -16,7 +16,7 @@
 #'
 #' @examples rainfall = dummyrainfall(1950, 2000)
 #' measurebias(rainfall, 0.6, 0.2, 0.2, TRUE, 12)
-measurebias = function(x, trainratio, validationratio, testratio, stationary, spiscale){
+measurebias = function(x, trainratio, validationratio, testratio, stationaryspi, spiscale){
 
   setDT(x)
 
@@ -24,14 +24,14 @@ measurebias = function(x, trainratio, validationratio, testratio, stationary, sp
   x = oossplit(x, trainratio, validationratio, testratio)
 
   # Compute the index in the training set only
-  biascorrindex = data.table::copy(computenspi(x[Split == 'Train'], stationary, spiscale))
+  biascorrindex = data.table::copy(computenspi(x[Split == 'Train'], stationaryspi, spiscale))
   biascorrindex[, Status := "Bias Corrected"]
 
   # Compute the index in the trasining, validation and test sets
-  biasedindex = data.table::copy(computenspi(x, stationary, spiscale))
+  biasedindex = data.table::copy(computenspi(x, stationaryspi, spiscale))
   biasedindex[, Status := "Bias Induced"]
 
-  if (stationary == TRUE){
+  if (stationaryspi == TRUE){
     indexVar = "SPI"
   } else {
     indexVar = "NSPI"

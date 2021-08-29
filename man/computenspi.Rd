@@ -4,12 +4,12 @@
 \alias{computenspi}
 \title{computenspi}
 \usage{
-computenspi(monthlyRainfall, stationary, spiScale)
+computenspi(monthlyRainfall, stationaryspi, spiScale)
 }
 \arguments{
 \item{monthlyRainfall}{data.table}
 
-\item{stationary}{logical}
+\item{stationaryspi}{logical}
 
 \item{spiScale}{numeric}
 }
@@ -22,5 +22,5 @@ The non-stationary version uses GAMLSS and models the parameters of a Gamma dist
 by incorporating the trend of accumulated precipitation.
 }
 \examples{
-computenspi(monthlyRainfall = dummyrainfall(1950, 2000), stationary = TRUE, spiScale = 12)
+computenspi(monthlyRainfall = dummyrainfall(1950, 2000), stationaryspi = TRUE, spiScale = 12)
 }
