@@ -43,7 +43,7 @@ bcoosautoarima = function(x, trainratio, validationratio = 0, testratio, station
   )
 
   # Fit an auto.arima in the training set
-  modeltrain = forecast::auto.arima(y = nspitrain)
+  modeltrain = forecast::auto.arima(y = nspitrain, ...)
 
   # Obtain fitted values in the training set
   drought[Split == 'Train', Fitted := modeltrain[['fitted']]]

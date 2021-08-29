@@ -76,7 +76,7 @@ bias
 
 #### Bias Corrected auto.arima
 
-In this section, we perform out-of-sample validation using a bias corrected auto.arima to forecast the Standardized Precipitation Index (SPI).
+In this section, we perform out-of-sample validation using a bias corrected auto.arima to forecast the Standardized Precipitation Index (SPI). An additional parameter is introduced to forecast::auto.arima and requires fitting a S-ARIMA model.
 
 ```{r, eval=TRUE, fig.height=3, fig.width=5}
 # out-of-sample validation using a bias corrected auto.arima
@@ -86,7 +86,7 @@ model = bcoosautoarima(x = rain,
                        testratio = 0.2,
                        stationaryspi = TRUE,
                        spiscale = 12,
-                       seasonal = FALSE)
+                       seasonal = TRUE)
 ```
 
 The model returns a set of diagnostics and analytical outcomes, including the model description, diagnostics plots and actual vs. predicted forecasts.
@@ -94,6 +94,9 @@ The model returns a set of diagnostics and analytical outcomes, including the mo
 ```{r, eval=TRUE, fig.height=3, fig.width=5, echo = TRUE}
 # Return the model description
 model[['Diagnostics']][['Model Description']]
+
+# Return R2 score in the test set
+model[['Diagnostics']][['R2 Score Test']]
 ```
 
 Actual vs. predicted SPI in the test set
@@ -104,6 +107,7 @@ model[['Diagnostics']][['Actual vs Predicted Test']]
 
 Additional models are developed and can be found here:
 
+* Bias induced auto.arima
 * Bias corrected modwt auto.arima
 * Bias corrected Support Vector Regression
-* Bias corrected modwt support vector regression
+* Bias corrected modwt Support Vector Regression
