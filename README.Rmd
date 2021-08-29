@@ -50,7 +50,7 @@ plot(drought)
 
 #### Data Split
 
-Split the rainfall series into training validation and test set.
+Split the rainfall series into training validation and test set:
 
 ```{r, eval=TRUE}
 rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2)
@@ -76,7 +76,7 @@ bias
 
 #### Bias Corrected auto.arima
 
-In this section, we perform out-of-sample validation using a bias corrected auto.arima to forecast the Standardized Precipitation Index (SPI). An additional parameter is introduced to forecast::auto.arima and requires fitting a S-ARIMA model.
+In this section, we perform out-of-sample validation using a bias corrected auto.arima to forecast the Standardized Precipitation Index (SPI). An additional parameter is introduced to forecast::auto.arima and requires fitting a S-ARIMA model:
 
 ```{r, eval=TRUE, fig.height=3, fig.width=5}
 # out-of-sample validation using a bias corrected auto.arima
@@ -89,7 +89,7 @@ model = bcoosautoarima(x = rain,
                        seasonal = TRUE)
 ```
 
-The model returns a set of diagnostics and analytical outcomes, including the model description, diagnostics plots and actual vs. predicted forecasts.
+The model returns a set of diagnostics and analytical outcomes, including the model description, diagnostics plots and actual vs. predicted forecasts:
 
 ```{r, eval=TRUE, fig.height=3, fig.width=5, echo = TRUE}
 # Return the model description
@@ -99,7 +99,7 @@ model[['Diagnostics']][['Model Description']]
 model[['Diagnostics']][['R2 Score Test']]
 ```
 
-Actual vs. predicted SPI in the test set
+Actual vs. predicted SPI in the test set:
 
 ```{r, eval=TRUE, fig.height=3, fig.width=5, echo = TRUE}
 model[['Diagnostics']][['Actual vs Predicted Test']]

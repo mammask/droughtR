@@ -62,9 +62,9 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 drought = computenspi(monthlyRainfall = rain, stationaryspi = FALSE, spiScale = 12)
-#> GAMLSS-RS iteration 1: Global Deviance = 3370.364 
-#> GAMLSS-RS iteration 2: Global Deviance = 3370.324 
-#> GAMLSS-RS iteration 3: Global Deviance = 3370.324
+#> GAMLSS-RS iteration 1: Global Deviance = 3694.165 
+#> GAMLSS-RS iteration 2: Global Deviance = 3694.091 
+#> GAMLSS-RS iteration 3: Global Deviance = 3694.091
 
 # Plot NSPI
 plot(drought)
@@ -76,35 +76,35 @@ plot(drought)
 
 #### Data Split
 
-Split the rainfall series into training validation and test set.
+Split the rainfall series into training validation and test set:
 
 ``` r
 rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2)
 print(rain)
-#>          Date Rainfall AccumPrecip Trend       mu      sigma     ecdfm
-#>   1: Jan 1950 9.231276          NA    NA       NA         NA        NA
-#>   2: Feb 1950 6.474338          NA    NA       NA         NA        NA
-#>   3: Mar 1950 9.677603          NA    NA       NA         NA        NA
-#>   4: Apr 1950 8.489991          NA    NA       NA         NA        NA
-#>   5: May 1950 7.359738          NA    NA       NA         NA        NA
-#>  ---                                                                  
-#> 606: Jul 2010 9.096594    98.50469   595 94.99487 0.04533240 0.7939698
-#> 607: Aug 2010 8.386214    99.22035   596 94.99197 0.04534379 0.8370829
-#> 608: Sep 2010 9.976719    98.36749   597 94.98907 0.04535520 0.7852775
-#> 609: Oct 2010 9.447542   100.15536   598 94.98617 0.04536660 0.8836696
-#> 610: Nov 2010 7.398056   100.28370   599 94.98327 0.04537801 0.8892699
-#>           NSPI Split
-#>   1:        NA  <NA>
-#>   2:        NA  <NA>
-#>   3:        NA  <NA>
-#>   4:        NA  <NA>
-#>   5:        NA  <NA>
-#>  ---                
-#> 606: 0.8202731  Test
-#> 607: 0.9825395  Test
-#> 608: 0.7901416  Test
-#> 609: 1.1935325  Test
-#> 610: 1.2226547  Test
+#>          Date  Rainfall AccumPrecip Trend       mu      sigma     ecdfm
+#>   1: Jan 1950  7.263034          NA    NA       NA         NA        NA
+#>   2: Feb 1950 10.400168          NA    NA       NA         NA        NA
+#>   3: Mar 1950  6.784392          NA    NA       NA         NA        NA
+#>   4: Apr 1950  4.847103          NA    NA       NA         NA        NA
+#>   5: May 1950  6.521322          NA    NA       NA         NA        NA
+#>  ---                                                                   
+#> 606: Jul 2010  6.758680    89.13644   595 95.35160 0.05748843 0.1271087
+#> 607: Aug 2010  8.018125    91.01700   596 95.34779 0.05749770 0.2168109
+#> 608: Sep 2010  8.813040    92.73238   597 95.34399 0.05750697 0.3222129
+#> 609: Oct 2010  7.835571    94.04771   598 95.34018 0.05751624 0.4138802
+#> 610: Nov 2010  8.373752    95.89542   599 95.33637 0.05752551 0.5481169
+#>            NSPI Split
+#>   1:         NA  <NA>
+#>   2:         NA  <NA>
+#>   3:         NA  <NA>
+#>   4:         NA  <NA>
+#>   5:         NA  <NA>
+#>  ---                 
+#> 606: -1.1401652  Test
+#> 607: -0.7830091  Test
+#> 608: -0.4615197  Test
+#> 609: -0.2175749  Test
+#> 610:  0.1209051  Test
 ```
 
 #### Bias measurement
@@ -136,22 +136,22 @@ bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio 
 bias
 #> $Transitions
 #>     Bias Corrected Class Bias Induced Class   N
-#>  1:             Very Wet           Very Wet   8
-#>  2:          Near Normal        Near Normal 219
-#>  3:       Moderately Wet     Moderately Wet  20
-#>  4:        Extremely Wet           Very Wet   9
-#>  5:             Very Wet     Moderately Wet  12
-#>  6:       Moderately Wet        Near Normal  20
-#>  7:       Moderately Dry     Moderately Dry  29
-#>  8:          Near Normal     Moderately Dry   8
-#>  9:       Moderately Dry           Very Dry   7
-#> 10:             Very Dry           Very Dry  13
-#> 11:             Very Dry      Extremely Dry   2
-#> 12:        Extremely Dry      Extremely Dry   6
-#> 13:        Extremely Wet      Extremely Wet   2
+#>  1:          Near Normal     Moderately Dry  11
+#>  2:          Near Normal        Near Normal 237
+#>  3:       Moderately Dry     Moderately Dry  17
+#>  4:       Moderately Dry           Very Dry   5
+#>  5:       Moderately Wet     Moderately Wet  21
+#>  6:             Very Wet           Very Wet   7
+#>  7:        Extremely Wet      Extremely Wet  10
+#>  8:       Moderately Wet           Very Wet   8
+#>  9:             Very Dry           Very Dry   5
+#> 10:          Near Normal     Moderately Wet   5
+#> 11:             Very Wet      Extremely Wet   5
+#> 12:             Very Dry      Extremely Dry   4
+#> 13:        Extremely Dry      Extremely Dry  20
 #> 
 #> $`Impacted Records`
-#> [1] "16.34% of records changed drought class"
+#> [1] "10.7% of records changed drought class"
 #> 
 #> $Plot
 ```
@@ -163,7 +163,7 @@ bias
 In this section, we perform out-of-sample validation using a bias
 corrected auto.arima to forecast the Standardized Precipitation Index
 (SPI). An additional parameter is introduced to forecast::auto.arima and
-requires fitting a S-ARIMA model.
+requires fitting a S-ARIMA model:
 
 ``` r
 # out-of-sample validation using a bias corrected auto.arima
@@ -179,19 +179,19 @@ model = bcoosautoarima(x = rain,
 
 The model returns a set of diagnostics and analytical outcomes,
 including the model description, diagnostics plots and actual
-vs. predicted forecasts.
+vs. predicted forecasts:
 
 ``` r
 # Return the model description
 model[['Diagnostics']][['Model Description']]
-#> [1] "ARIMA(1,0,0)(2,0,0)[12] with zero mean"
+#> [1] "ARIMA(2,0,2)(2,0,0)[12] with non-zero mean"
 
 # Return R2 score in the test set
 model[['Diagnostics']][['R2 Score Test']]
-#> [1] 0.8737064
+#> [1] 0.8115929
 ```
 
-Actual vs. predicted SPI in the test set
+Actual vs. predicted SPI in the test set:
 
 ``` r
 model[['Diagnostics']][['Actual vs Predicted Test']]
