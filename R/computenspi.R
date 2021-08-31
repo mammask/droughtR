@@ -11,7 +11,7 @@
 #' @import data.table SPEI
 #' @importFrom utils sessionInfo
 #' @importFrom data.table := .N
-#' @importFrom gamlss gamlss
+#' @rawNamespace import(gamlss, except = CV)
 #' @importFrom gamlss.dist GA
 #' @return data.table
 #' @export

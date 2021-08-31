@@ -1,4 +1,4 @@
-Package: droughtr
+Package: droughtR
 Title: Reduced Bias Drought Forecasting Framework
 Version: 0.0.1
 Authors@R: 
@@ -19,10 +19,13 @@ Imports:
     gamlss.dist,
     SPEI,
     ggplot2,
-    MLmetrics
-Depends:
+    MLmetrics,
+    gamlss,
     forecast,
-    gamlss
+    wavelets
 Suggests: 
+    rmarkdown,
+    knitr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+VignetteBuilder: knitr

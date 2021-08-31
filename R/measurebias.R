@@ -8,9 +8,10 @@
 #' @param testratio  numeric; the proportion of the test set
 #' @param stationaryspi logical; When TRUE SPI is calculated; when FALSE NSPI is calculated
 #' @param spiscale integer; the scale of accumulated precipitation
-#' @import data.table ggplot2 gamlss gamlss.dist SPEI
+#' @import data.table ggplot2 gamlss.dist SPEI
 #' @importFrom data.table := .N
-#'
+#' @rawNamespace import(gamlss, except = CV)
+#' @rawNamespace import(forecast, except = CV)
 #' @return list
 #' @export
 #'

@@ -8,7 +8,9 @@
 #' @param spiscale Numeric value that reflects the scale of the index
 #' @param timesteps Number of periods for forecasting
 #' @param ... Additional arguments that relate to the inputs of forecast::auto.arima
-#' @import data.table forecast zoo
+#' @import data.table zoo
+#' @rawNamespace import(gamlss, except = CV)
+#' @rawNamespace import(forecast, except = CV)
 #' @return numeric value with model predictions
 #' @export
 #'

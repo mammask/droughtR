@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 ```{r, eval=FALSE}
 # Install the development version on Github
-devtools::install_github("mammask/droughtr")
+devtools::install_github("mammask/droughtR")
 ```
 
 ## Usage
@@ -34,7 +34,7 @@ devtools::install_github("mammask/droughtr")
 
 ```{r, eval=TRUE, fig.height=3, fig.width=5}
 # Load droughtr library
-library(droughtr)
+library(droughtR)
 
 # Generate synthetic monthly rainfall data using the Gamma distribution
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
@@ -80,13 +80,13 @@ In this section, we perform out-of-sample validation using a bias corrected auto
 
 ```{r, eval=TRUE, fig.height=3, fig.width=5}
 # out-of-sample validation using a bias corrected auto.arima
-model = bcoosautoarima(x = rain,
-                       trainratio = 0.8,
-                       validationratio = 0.0,
-                       testratio = 0.2,
-                       stationaryspi = TRUE,
-                       spiscale = 12,
-                       seasonal = TRUE)
+model = bcautoarima(x = rain,
+                    trainratio = 0.8,
+                    validationratio = 0.0,
+                    testratio = 0.2,
+                    stationaryspi = TRUE,
+                    spiscale = 12,
+                    seasonal = TRUE)
 ```
 
 The model returns a set of diagnostics and analytical outcomes, including the model description, diagnostics plots and actual vs. predicted forecasts:

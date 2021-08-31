@@ -1,0 +1,24 @@
+---
+title: "Bias in Drought Forecasting"
+author: "Konstantinos Mammas"
+url: https://github.com/mammask
+affiliation: University of Aegean, Department of Environment
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BiasMeasurement}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+## Bias during out-of-sample validation
+
+## Measuring bias using `droughtR`

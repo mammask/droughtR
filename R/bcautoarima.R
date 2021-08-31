@@ -1,4 +1,4 @@
-#' bcoosautoarima
+#' bcautoarima
 #'
 #' Fits a bias-corrected auto.arima to forecast the standardized precipitation index
 #'
@@ -12,14 +12,15 @@
 #' @import data.table ggplot2 zoo MLmetrics
 #' @importFrom utils sessionInfo
 #' @importFrom data.table := .N set
-#' @importFrom gamlss gamlss
+#' @rawNamespace import(gamlss, except = CV)
+#' @rawNamespace import(forecast, except = CV)
 #' @importFrom forecast auto.arima gghistogram forecast autoplot Acf ggAcf CV
 #' @return list with evaluation metrics and diagnostic plots
 #' @export
 #'
 #' @examples x = dummyrainfall(start = 1950, end = 2020)
-#' bcoosautoarima(x, 0.8, 0, 0.2, TRUE, 12, seasonal = FALSE)
-bcoosautoarima = function(x, trainratio, validationratio = 0, testratio, stationaryspi, spiscale, ...){
+#' bcautoarima(x, 0.8, 0, 0.2, TRUE, 12, seasonal = FALSE)
+bcautoarima = function(x, trainratio, validationratio = 0, testratio, stationaryspi, spiscale, ...){
 
   if ((trainratio+validationratio+testratio) != 1){
     stop("The dataset split ratio should add up to 1")
@@ -53,7 +54,6 @@ bcoosautoarima = function(x, trainratio, validationratio = 0, testratio, station
   drought[Split == 'Train', Fitted := modeltrain[['fitted']]]
 
   # Generate model diagnostics ----------------------------------------------------------------------------
-  # Initiate diagnostics object
   diagResults = list()
 
   # Obtain model description
