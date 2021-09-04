@@ -1,6 +1,6 @@
-#' bcautoarima
+#' biautoarima
 #'
-#' Fits a bias-corrected auto.arima to forecast the standardized precipitation index
+#' Fits a bias-induced auto.arima to forecast the standardized precipitation index
 #'
 #' @param x data.table
 #' @param trainratio Numeric value represents the proportion of the training set
@@ -19,8 +19,8 @@
 #' @export
 #'
 #' @examples x = dummyrainfall(start = 1950, end = 2020)
-#' bcautoarima(x, 0.8, 0, 0.2, TRUE, 12, seasonal = FALSE)
-bcautoarima = function(x, trainratio, validationratio = 0, testratio, stationaryspi, spiscale, ...){
+#' biautoarima(x, 0.8, 0, 0.2, TRUE, 12, seasonal = FALSE)
+biautoarima = function(x, trainratio, validationratio = 0, testratio, stationaryspi, spiscale, ...){
 
   if ((trainratio+validationratio+testratio) != 1){
     stop("The dataset split ratio should add up to 1")
@@ -37,7 +37,7 @@ bcautoarima = function(x, trainratio, validationratio = 0, testratio, stationary
 
   # Compute (N)SPI
   print("Calculating the drought index")
-  drought = computenspi(rain[Split == 'Train'], stationaryspi, spiscale)
+  drought = computenspi(rain, stationaryspi, spiscale)
   drought = drought[complete.cases(drought)]
 
   # Transform (N)SPI into a ts object
@@ -99,9 +99,9 @@ bcautoarima = function(x, trainratio, validationratio = 0, testratio, stationary
 
   # Evaluate model in the test set -----------------------------------------------------------
   # Index records and start sequentially SPI calculation, model update and forecasts storing
-  rain[, id := 1:.N]
-  idstart = rain[Split == 'Test', min(id)-1]
-  idend   = rain[Split == 'Test', max(id)-1]
+  drought[, id := 1:.N]
+  idstart = drought[Split == 'Test', min(id)-1]
+  idend   = drought[Split == 'Test', max(id)-1]
 
   actual = c()
   pred   = c()
@@ -109,8 +109,7 @@ bcautoarima = function(x, trainratio, validationratio = 0, testratio, stationary
   print("Initiating sequential index calculation, model update and prediction")
   for (idx in idstart:c(idend+1)){
     utils::setTxtProgressBar(pb, idx)
-    droughtupd = computenspi(monthlyRainfall = rain[id <= idx], stationaryspi, spiscale)
-    droughtupd = droughtupd[complete.cases(droughtupd)]
+    droughtupd = copy(drought[id <= idx])
 
     nspitest   = ts(data = droughtupd[[droughtId]],
                     start = droughtupd[, min(Date)],
@@ -131,7 +130,7 @@ bcautoarima = function(x, trainratio, validationratio = 0, testratio, stationary
   print("Model evaluation in test set complete")
 
   # Obtain Model Forecasts in the test set
-  evaltestset = data.table(Date = rain[Split == 'Test',Date],
+  evaltestset = data.table(Date = drought[Split == 'Test',Date],
                            Index = actual,
                            Fitted = pred
   )

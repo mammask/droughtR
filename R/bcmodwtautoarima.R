@@ -8,6 +8,8 @@
 #' @param testratio Numeric value represents the proportion of the test set
 #' @param stationaryspi Logical when TRUE SPI is calculated; when FALSE NSPI is calculated
 #' @param spiscale Numeric value that reflects the scale of the index
+#' @param modwtfilter wavelet filter
+#' @param nlevels number of levels of decomposition
 #' @param ... Additional arguments that relate to the inputs of forecast::auto.arima
 #' @import data.table ggplot2 zoo MLmetrics wavelets
 #' @importFrom utils sessionInfo
@@ -65,8 +67,8 @@ bcmodwtautoarima = function(x, trainratio, validationratio = 0, testratio, stati
       trainseries[[i]] = ts(data = trainmodwt@W[[i]], frequency = 12)
     } else if (substr(i,1,1) == 'V') {
       # if (as.numeric(substr(i,2,2)) == nlevels){
-      trainmodwt@V[[i]][1:trainboundary] = NA
-      trainseries[[i]] = ts(data = trainmodwt@V[[i]], frequency = 12)
+        trainmodwt@V[[i]][1:trainboundary] = NA
+        trainseries[[i]] = ts(data = trainmodwt@V[[i]], frequency = 12)
       # }
     }
     # Train a model for each decomposed signal
@@ -83,7 +85,9 @@ bcmodwtautoarima = function(x, trainratio, validationratio = 0, testratio, stati
     if (substr(i,1,1) == 'W'){
       trainmodwt@W[[i]] = as.matrix(as.numeric(trainfitted[[i]][['fitted']]), ncol = 1)
     } else if (substr(i,1,1) == 'V'){
-      trainmodwt@V[[i]] = as.matrix(as.numeric(trainfitted[[i]][['fitted']]), ncol = 1)
+      # if (as.numeric(substr(i,2,2)) == nlevels){
+        trainmodwt@V[[i]] = as.matrix(as.numeric(trainfitted[[i]][['fitted']]), ncol = 1)
+      # }
     }
   }
 
@@ -159,7 +163,9 @@ bcmodwtautoarima = function(x, trainratio, validationratio = 0, testratio, stati
       if (substr(j,1,1) == 'W'){
         testseries[[j]] = ts(data = testmodwt@W[[j]], frequency = 12)
       } else if (substr(j,1,1) == 'V') {
-        testseries[[j]] = ts(data = testmodwt@V[[j]], frequency = 12)
+        # if (as.numeric(substr(j,2,2)) == nlevels){
+          testseries[[j]] = ts(data = testmodwt@V[[j]], frequency = 12)
+        # }
       }
       # Train a model for each decomposed signal
       testmodwtmodel[[j]] = forecast::Arima(model = trainmodwtmodel[[j]],
@@ -177,7 +183,9 @@ bcmodwtautoarima = function(x, trainratio, validationratio = 0, testratio, stati
       if (substring(j,1,1) == 'W'){
         testmodwt@W[[j]] = rbind(testmodwt@W[[j]], as.matrix(pred, ncol = 1))
       } else if (substring(j,1,1) == 'V'){
-        testmodwt@V[[j]] = rbind(testmodwt@V[[j]], as.matrix(pred, ncol = 1))
+        # if (as.numeric(substr(j,2,2)) == nlevels){
+          testmodwt@V[[j]] = rbind(testmodwt@V[[j]], as.matrix(pred, ncol = 1))
+        # }
       }
     }
     # Reconstruct the predictions from the updated modwt
