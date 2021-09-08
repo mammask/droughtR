@@ -109,5 +109,3 @@ Additional models are developed and can be found here:
 
 * Bias induced auto.arima
 * Bias corrected modwt auto.arima
-* Bias corrected Support Vector Regression
-* Bias corrected modwt Support Vector Regression
