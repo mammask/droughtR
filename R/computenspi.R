@@ -19,6 +19,9 @@
 #' @examples computenspi(monthlyRainfall = dummyrainfall(1950, 2000), stationaryspi = TRUE, spiScale = 12)
 computenspi = function(monthlyRainfall, stationaryspi, spiScale){
 
+  setDT(monthlyRainfall)
+  monthlyRainfall[, Date := as.yearmon(Date)]
+
   if (class(stationaryspi) != "logical"){
     stop("stationarity should be of logical type")
   }
@@ -38,8 +41,6 @@ computenspi = function(monthlyRainfall, stationaryspi, spiScale){
   if (monthlyRainfall[,class(Date)] != "yearmon"){
     stop("Date should be in yearmon format")
   }
-
-  setDT(monthlyRainfall)
 
   if (stationaryspi == TRUE){
 

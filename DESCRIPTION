@@ -1,7 +1,7 @@
 Package: droughtR
 Title: Reduced Bias Drought Forecasting Framework
 Version: 0.0.1
-Authors@R: 
+Authors@R:
     person(given = "Konstantinos",
            family = "Mammas",
            role = c("aut", "cre"),
