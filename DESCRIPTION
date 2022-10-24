@@ -23,7 +23,6 @@ Imports:
     gamlss,
     forecast,
     wavelets,
-    droughtR
 Suggests: 
     rmarkdown,
     knitr,
