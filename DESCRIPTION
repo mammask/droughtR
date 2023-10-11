@@ -12,17 +12,15 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Imports:
     data.table,
     zoo,
     gamlss.dist,
     SPEI,
     ggplot2,
-    MLmetrics,
     gamlss,
     forecast,
-    wavelets,
     stats
 Suggests: 
     rmarkdown,
@@ -36,4 +34,6 @@ Collate:
     'computenspi.R'
     'droughtclass.R'
     'globals.R'
+    'measurebias.R'
+    'oossplit.R'
     'plot.R'

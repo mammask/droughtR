@@ -40,7 +40,7 @@ library(droughtR)
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
-drought = computenspi(monthlyRainfall = rain, stationaryspi = FALSE, spiScale = 12)
+drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
 
 # Plot NSPI
 plot(drought)
@@ -70,7 +70,7 @@ We measure bias by computing the number of miss-classifications in the training 
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute bias
-bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12)
+bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12, dist = 'normal')
 bias
 ```
 

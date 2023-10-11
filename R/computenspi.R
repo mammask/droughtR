@@ -34,19 +34,20 @@ computenspi = function(x, stationaryspi, spiScale, dist){
   monthlyRainfall = copy(x)
   monthlyRainfall[, Date := as.yearmon(Date)]
 
-  if (class(stationaryspi) != "logical"){
+
+  if (base::inherits(stationaryspi, "logical", which = FALSE) == FALSE){
     stop("stationarity should be of type logical")
   }
 
-  if (class(spiScale) != "numeric"){
+  if (base::inherits(spiScale, "numeric", which = FALSE) == FALSE){
     stop("spiScale should be numeric")
   }
 
-  if (!"data.table" %in% class(monthlyRainfall)){
+  if (base::inherits(monthlyRainfall, "data.table", which = FALSE) == FALSE){
     stop("monthlyRainfall is not a data.table")
   }
 
-  if (class(dist) != "character"){
+  if (base::inherits(dist, "character", which = FALSE) == FALSE){
     stop("dist should be of type character")
   }
 
@@ -54,7 +55,7 @@ computenspi = function(x, stationaryspi, spiScale, dist){
     stop("monthlyRainfall should consist of Date and Rainfall columns")
   }
 
-  if (monthlyRainfall[,class(Date)] != "yearmon"){
+  if (base::inherits(monthlyRainfall[,Date], "yearmon", which = FALSE) == FALSE){
     stop("Date should be in yearmon format")
   }
 
