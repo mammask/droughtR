@@ -4,14 +4,16 @@
 \alias{computenspi}
 \title{computenspi}
 \usage{
-computenspi(monthlyRainfall, stationaryspi, spiScale)
+computenspi(x, stationaryspi, spiScale, dist)
 }
 \arguments{
-\item{monthlyRainfall}{data.table}
+\item{x}{data.table}
 
-\item{stationaryspi}{logical}
+\item{stationaryspi}{logical used in \emph{array} method (TRUE when stationary and FALSE when otherwise)}
 
-\item{spiScale}{numeric}
+\item{spiScale}{A positive integer value, typically ranging from 1 to 24}
+
+\item{dist}{A character that can be either, "normal" when Normal distribution is used, "gamma" for Gamma, "zigamma" for zero adjusted Gamma and "weibull" for Weibull.}
 }
 \value{
 data.table
@@ -22,5 +24,9 @@ The non-stationary version uses GAMLSS and models the parameters of a Gamma dist
 by incorporating the trend of accumulated precipitation.
 }
 \examples{
-computenspi(monthlyRainfall = dummyrainfall(1950, 2000), stationaryspi = TRUE, spiScale = 12)
+computenspi(x = dummyrainfall(1950, 2000),
+            stationaryspi = TRUE,
+            spiScale = 12,
+            dist = 'gamma'
+            )
 }

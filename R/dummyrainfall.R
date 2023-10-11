@@ -2,8 +2,8 @@
 #'
 #' Create a data.table with synthetic rainfall data generated from a Gamma distribution
 #'
-#' @param startYear numeric
-#' @param endYear numeric
+#' @param startYear A numeric positive integer indicating the start year (e.g., 1950)
+#' @param endYear A numeric numeric positive integer indicating the end year (e.g., 2021)
 #'
 #' @return data.table
 #' @import data.table zoo
@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' dummyrainfall(1950, 2021)
-dummyrainfall <- function(startYear, endYear){
+dummyrainfall = function(startYear, endYear){
 
   if (class(startYear) != "numeric" | class(endYear) != "numeric"){
     stop("input iload_all(s non-numeric argument")

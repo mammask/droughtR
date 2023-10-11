@@ -1,6 +1,6 @@
 Package: droughtR
 Title: Reduced Bias Drought Forecasting Framework
-Version: 0.0.1
+Version: 1.0.0
 Authors@R:
     person(given = "Konstantinos",
            family = "Mammas",
@@ -12,7 +12,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Imports:
     data.table,
     zoo,
@@ -23,9 +23,17 @@ Imports:
     gamlss,
     forecast,
     wavelets,
+    stats
 Suggests: 
     rmarkdown,
     knitr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+Collate: 
+    'compdist.R'
+    'dummyrainfall.R'
+    'computenspi.R'
+    'droughtclass.R'
+    'globals.R'
+    'plot.R'

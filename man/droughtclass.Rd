@@ -7,7 +7,7 @@
 droughtclass(x)
 }
 \arguments{
-\item{x}{numeric}
+\item{x}{A numeric value indicating the characterization of drought.}
 }
 \value{
 numeric

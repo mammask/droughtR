@@ -2,15 +2,13 @@
 #'
 #' Assigns classes to various ranges of the standardized precipitation index (SPI)
 #'
-#' @param x numeric
+#' @param x A numeric value indicating the characterization of drought.
 #'
 #' @return numeric
 #' @export
 #'
 #' @examples droughtclass(1.5)
 droughtclass = function(x){
-
-
 
   if (is.na(x)){
 

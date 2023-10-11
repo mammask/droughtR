@@ -33,7 +33,7 @@ devtools::install_github("mammask/droughtR")
 ### Generate SPI and NSPI
 
 ```{r, eval=TRUE, fig.height=3, fig.width=5}
-# Load droughtr library
+# Load droughtR library
 library(droughtR)
 
 # Generate synthetic monthly rainfall data using the Gamma distribution
@@ -74,38 +74,38 @@ bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio 
 bias
 ```
 
-#### Bias Corrected auto.arima
+<!-- #### Bias Corrected auto.arima -->
 
-In this section, we perform out-of-sample validation using a bias corrected auto.arima to forecast the Standardized Precipitation Index (SPI). An additional parameter is introduced to forecast::auto.arima and requires fitting a S-ARIMA model:
+<!-- In this section, we perform out-of-sample validation using a bias corrected auto.arima to forecast the Standardized Precipitation Index (SPI). An additional parameter is introduced to forecast::auto.arima and requires fitting a S-ARIMA model: -->
 
-```{r, eval=TRUE, fig.height=3, fig.width=5}
-# out-of-sample validation using a bias corrected auto.arima
-model = bcautoarima(x = rain,
-                    trainratio = 0.8,
-                    validationratio = 0.0,
-                    testratio = 0.2,
-                    stationaryspi = TRUE,
-                    spiscale = 12,
-                    seasonal = TRUE)
-```
+<!-- ```{r, eval=TRUE, fig.height=3, fig.width=5} -->
+<!-- # out-of-sample validation using a bias corrected auto.arima -->
+<!-- model = bcautoarima(x = rain, -->
+<!--                     trainratio = 0.8, -->
+<!--                     validationratio = 0.0, -->
+<!--                     testratio = 0.2, -->
+<!--                     stationaryspi = TRUE, -->
+<!--                     spiscale = 12, -->
+<!--                     seasonal = TRUE) -->
+<!-- ``` -->
 
-The model returns a set of diagnostics and analytical outcomes, including the model description, diagnostics plots and actual vs. predicted forecasts:
+<!-- The model returns a set of diagnostics and analytical outcomes, including the model description, diagnostics plots and actual vs. predicted forecasts: -->
 
-```{r, eval=TRUE, fig.height=3, fig.width=5, echo = TRUE}
-# Return the model description
-model[['Diagnostics']][['Model Description']]
+<!-- ```{r, eval=TRUE, fig.height=3, fig.width=5, echo = TRUE} -->
+<!-- # Return the model description -->
+<!-- model[['Diagnostics']][['Model Description']] -->
 
-# Return R2 score in the test set
-model[['Diagnostics']][['R2 Score Test']]
-```
+<!-- # Return R2 score in the test set -->
+<!-- model[['Diagnostics']][['R2 Score Test']] -->
+<!-- ``` -->
 
-Actual vs. predicted SPI in the test set:
+<!-- Actual vs. predicted SPI in the test set: -->
 
-```{r, eval=TRUE, fig.height=3, fig.width=5, echo = TRUE}
-model[['Diagnostics']][['Actual vs Predicted Test']]
-```
+<!-- ```{r, eval=TRUE, fig.height=3, fig.width=5, echo = TRUE} -->
+<!-- model[['Diagnostics']][['Actual vs Predicted Test']] -->
+<!-- ``` -->
 
-Additional models are developed and can be found here:
+<!-- Additional models are developed and can be found here: -->
 
-* Bias induced auto.arima
-* Bias corrected modwt auto.arima
+<!-- * Bias induced auto.arima -->
+<!-- * Bias corrected modwt auto.arima -->

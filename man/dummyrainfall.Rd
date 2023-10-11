@@ -7,9 +7,9 @@
 dummyrainfall(startYear, endYear)
 }
 \arguments{
-\item{startYear}{numeric}
+\item{startYear}{A numeric positive integer indicating the start year (e.g., 1950)}
 
-\item{endYear}{numeric}
+\item{endYear}{A numeric numeric positive integer indicating the end year (e.g., 2021)}
 }
 \value{
 data.table

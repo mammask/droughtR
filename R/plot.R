@@ -11,8 +11,11 @@
 #' @import data.table ggplot2
 #' @return ggplot2
 #' @importFrom ggplot2 geom_bar theme_light geom_hline ylab
-#' @examples x = computenspi(monthlyRainfall = dummyrainfall(1950, 2000), stationary = TRUE, spiScale = 12)
-#' plot(x)
+#' @examples mIndex = computenspi(x = dummyrainfall(1950, 2000),
+#'                 stationary = TRUE,
+#'                 spiScale = 12,
+#'                 dist = 'gamma')
+#' plot(mIndex)
 #' @export
 plot.drought = function(x,label=TRUE, log=TRUE, type = "drought", ...){
 

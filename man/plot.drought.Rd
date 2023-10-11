@@ -24,6 +24,9 @@ ggplot2
 Plots spi or nspi index of a data.table input with class drought
 }
 \examples{
-x = computenspi(monthlyRainfall = dummyrainfall(1950, 2000), stationary = TRUE, spiScale = 12)
-plot(x)
+mIndex = computenspi(x = dummyrainfall(1950, 2000),
+                stationary = TRUE,
+                spiScale = 12,
+                dist = 'gamma')
+plot(mIndex)
 }

@@ -4,26 +4,38 @@
 #'  The non-stationary version uses GAMLSS and models the parameters of a Gamma distribution
 #'  by incorporating the trend of accumulated precipitation.
 #'
-#' @param monthlyRainfall data.table
-#' @param stationaryspi logical
-#' @param spiScale numeric
+#' @param x data.table
+#' @param stationaryspi logical used in *array* method (TRUE when stationary and FALSE when otherwise)
+#' @param spiScale A positive integer value, typically ranging from 1 to 24
+#' @param dist A character that can be either, "normal" when Normal distribution is used, "gamma" for Gamma, "zigamma" for zero adjusted Gamma and "weibull" for Weibull.
 #'
 #' @import data.table SPEI
 #' @importFrom utils sessionInfo
 #' @importFrom data.table := .N
 #' @rawNamespace import(gamlss, except = CV)
 #' @importFrom gamlss.dist GA
+#' @importFrom gamlss.dist ZAGA
+#' @importFrom gamlss.dist NO
+#' @importFrom gamlss.dist WEI
+#' @importFrom stats as.formula
+#' @include dummyrainfall.R
 #' @return data.table
 #' @export
 #'
-#' @examples computenspi(monthlyRainfall = dummyrainfall(1950, 2000), stationaryspi = TRUE, spiScale = 12)
-computenspi = function(monthlyRainfall, stationaryspi, spiScale){
+#' @examples
+#' computenspi(x = dummyrainfall(1950, 2000),
+#'             stationaryspi = TRUE,
+#'             spiScale = 12,
+#'             dist = 'gamma'
+#'             )
+computenspi = function(x, stationaryspi, spiScale, dist){
 
-  setDT(monthlyRainfall)
+  setDT(x)
+  monthlyRainfall = copy(x)
   monthlyRainfall[, Date := as.yearmon(Date)]
 
   if (class(stationaryspi) != "logical"){
-    stop("stationarity should be of logical type")
+    stop("stationarity should be of type logical")
   }
 
   if (class(spiScale) != "numeric"){
@@ -34,6 +46,10 @@ computenspi = function(monthlyRainfall, stationaryspi, spiScale){
     stop("monthlyRainfall is not a data.table")
   }
 
+  if (class(dist) != "character"){
+    stop("dist should be of type character")
+  }
+
   if (!any(names(monthlyRainfall) %in% c("Date","Rainfall"))){
     stop("monthlyRainfall should consist of Date and Rainfall columns")
   }
@@ -42,48 +58,61 @@ computenspi = function(monthlyRainfall, stationaryspi, spiScale){
     stop("Date should be in yearmon format")
   }
 
-  if (stationaryspi == TRUE){
+  # Define family distribution
+  if (dist == 'gamma') {
 
-    mts = ts(data = monthlyRainfall[,Rainfall],
-              start = monthlyRainfall[,min(Date)],
-              frequency = 1)
+    familyDist = gamlss.dist::GA
+    pfamilyDist = gamlss.dist::pGA
 
-    dIndex = SPEI::spi(data = mts,
-                        scale = spiScale,
-                        distribution = "Gamma",
-                        fit = "max-lik"
-                        )
+  } else if (dist == 'zigamma'){
 
-    monthlyRainfall[, SPI := as.numeric(dIndex[['fitted']])][]
+    familyDist = gamlss.dist::ZAGA
+    pfamilyDist = gamlss.dist::pZAGA
 
-  } else {
+  } else if (dist == 'normal'){
 
-    # Compute accumulated precipitation
-    accumPrecip = base::rowSums(stats::embed(monthlyRainfall[, Rainfall],spiScale),na.rm=FALSE)
-    # Add accumulated precipitation to the monthly rainfall data
-    monthlyRainfall[, AccumPrecip := c(rep(NA, spiScale-1), accumPrecip)]
-    # Compute the trend
-    monthlyRainfall[stats::complete.cases(monthlyRainfall), Trend := 1:.N]
-    # Fit GAMLSS model that varies in shape and scale
-    model = gamlss::gamlss(formula = AccumPrecip ~ Trend,
-                           sigma.formula = AccumPrecip ~ Trend,
-                           data = monthlyRainfall[stats::complete.cases(monthlyRainfall)],
-                           family = gamlss.dist::GA
-    )
-    # Obtain the response of GAMLSS
-    pred = predictAll(model,
-                      data = monthlyRainfall[stats::complete.cases(monthlyRainfall), .(AccumPrecip, Trend)],
-                      type = 'response'
-    )
-    # Obtain the estimated mu
-    monthlyRainfall[stats::complete.cases(monthlyRainfall), mu := pred$mu]
-    # Obtain the estimated sigma
-    monthlyRainfall[stats::complete.cases(monthlyRainfall), sigma := pred$sigma]
-    # Obtain ecdf
-    monthlyRainfall[stats::complete.cases(monthlyRainfall), ecdfm := gamlss.dist::pGA(AccumPrecip, mu = mu, sigma = sigma)]
-    # Calculate NSPI
-    monthlyRainfall[stats::complete.cases(monthlyRainfall), NSPI := qnorm(ecdfm)][]
+    familyDist = gamlss.dist::NO
+    pfamilyDist = gamlss.dist::pNO
+
+  } else if (dist == 'weibull'){
+
+    familyDist = gamlss.dist::WEI
+    pfamilyDist = gamlss.dist::pWEI
+
   }
+
+  # Compute accumulated precipitation
+  accumPrecip = base::rowSums(stats::embed(monthlyRainfall[, Rainfall],spiScale),na.rm=FALSE)
+  # Add accumulated precipitation to the monthly rainfall data
+  monthlyRainfall[, AccumPrecip := c(rep(NA, spiScale-1), accumPrecip)]
+  # Compute the trend
+  monthlyRainfall[stats::complete.cases(monthlyRainfall), Trend := 1:.N]
+
+  # Define the model formula
+  modelFormula = ifelse(stationaryspi,  "AccumPrecip ~ 1", "AccumPrecip ~ Trend")
+
+  # Fit GAMLSS model that varies in shape and scale
+  model = gamlss::gamlss(formula = AccumPrecip ~ Trend,
+                         sigma.formula = as.formula(modelFormula),
+                         data = monthlyRainfall[stats::complete.cases(monthlyRainfall)],
+                         family = familyDist
+  )
+
+
+  # Obtain the response of GAMLSS
+  pred = predictAll(model,
+                    data = monthlyRainfall[stats::complete.cases(monthlyRainfall), c("AccumPrecip", "Trend"), with = F],
+                    type = 'response'
+  )
+  # Obtain the estimated mu
+  monthlyRainfall[stats::complete.cases(monthlyRainfall), mu := pred$mu]
+  # Obtain the estimated sigma
+  monthlyRainfall[stats::complete.cases(monthlyRainfall), sigma := pred$sigma]
+  # Obtain ecdf
+  monthlyRainfall[stats::complete.cases(monthlyRainfall), ecdfm := pfamilyDist(AccumPrecip, mu = mu, sigma = sigma)]
+  # Calculate NSPI
+  monthlyRainfall[stats::complete.cases(monthlyRainfall), c(ifelse(stationaryspi, "SPI", "NSPI")) := qnorm(ecdfm)][]
+
 
   class(monthlyRainfall) = c("drought", class(monthlyRainfall))
 
