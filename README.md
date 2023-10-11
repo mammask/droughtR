@@ -34,8 +34,9 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3557.354 
-#> GAMLSS-RS iteration 2: Global Deviance = 3557.354
+#> GAMLSS-RS iteration 1: Global Deviance = 3392.85 
+#> GAMLSS-RS iteration 2: Global Deviance = 3392.797 
+#> GAMLSS-RS iteration 3: Global Deviance = 3392.797
 
 # Plot NSPI
 plot(drought)
@@ -52,18 +53,18 @@ Split the rainfall series into training validation and test set:
 ``` r
 rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2)
 print(rain)
-#>          Date Rainfall Split
-#>   1: Jan 1950 8.980207 Train
-#>   2: Feb 1950 6.989177 Train
-#>   3: Mar 1950 6.148575 Train
-#>   4: Apr 1950 7.674214 Train
-#>   5: May 1950 7.846225 Train
-#>  ---                        
-#> 606: Jul 2010 8.126654  Test
-#> 607: Aug 2010 6.465501  Test
-#> 608: Sep 2010 6.731451  Test
-#> 609: Oct 2010 6.550978  Test
-#> 610: Nov 2010 8.745794  Test
+#>          Date  Rainfall Split
+#>   1: Jan 1950 10.261372 Train
+#>   2: Feb 1950  7.686214 Train
+#>   3: Mar 1950  8.080724 Train
+#>   4: Apr 1950  6.539797 Train
+#>   5: May 1950  8.292368 Train
+#>  ---                         
+#> 606: Jul 2010  8.862063  Test
+#> 607: Aug 2010  5.717162  Test
+#> 608: Sep 2010  7.730471  Test
+#> 609: Oct 2010  8.608327  Test
+#> 610: Nov 2010  9.036312  Test
 ```
 
 #### Bias measurement
@@ -92,33 +93,33 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute bias
 bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12, dist = 'normal')
-#> GAMLSS-RS iteration 1: Global Deviance = 1854.13 
-#> GAMLSS-RS iteration 2: Global Deviance = 1854.13 
-#> GAMLSS-RS iteration 1: Global Deviance = 3254.111 
-#> GAMLSS-RS iteration 2: Global Deviance = 3254.111
+#> GAMLSS-RS iteration 1: Global Deviance = 1953.79 
+#> GAMLSS-RS iteration 2: Global Deviance = 1953.79 
+#> GAMLSS-RS iteration 1: Global Deviance = 3405.715 
+#> GAMLSS-RS iteration 2: Global Deviance = 3405.715
 bias
 #> $Transitions
 #>     Bias Corrected Class Bias Induced Class   N
-#>  1:          Near Normal        Near Normal 231
-#>  2:          Near Normal     Moderately Wet   3
-#>  3:       Moderately Wet           Very Wet   1
-#>  4:       Moderately Wet     Moderately Wet  27
-#>  5:       Moderately Dry        Near Normal   9
-#>  6:        Extremely Dry           Very Dry   8
-#>  7:        Extremely Dry      Extremely Dry   8
-#>  8:             Very Dry     Moderately Dry   3
-#>  9:       Moderately Dry     Moderately Dry  14
-#> 10:             Very Wet           Very Wet   8
-#> 11:             Very Wet     Moderately Wet   6
-#> 12:        Extremely Wet      Extremely Wet   6
-#> 13:             Very Dry           Very Dry   7
-#> 14:        Extremely Wet           Very Wet   4
-#> 15:       Moderately Wet        Near Normal   7
-#> 16:          Near Normal     Moderately Dry  10
-#> 17:       Moderately Dry           Very Dry   3
+#>  1:          Near Normal        Near Normal 225
+#>  2:       Moderately Dry        Near Normal   4
+#>  3:             Very Dry     Moderately Dry   6
+#>  4:        Extremely Dry           Very Dry   2
+#>  5:             Very Dry           Very Dry  11
+#>  6:          Near Normal     Moderately Wet   1
+#>  7:       Moderately Wet     Moderately Wet  19
+#>  8:       Moderately Dry     Moderately Dry  29
+#>  9:             Very Wet           Very Wet   8
+#> 10:        Extremely Wet      Extremely Wet   7
+#> 11:        Extremely Wet           Very Wet   5
+#> 12:             Very Wet     Moderately Wet   6
+#> 13:        Extremely Dry      Extremely Dry   8
+#> 14:       Moderately Wet        Near Normal  17
+#> 15:          Near Normal     Moderately Dry   3
+#> 16:       Moderately Dry           Very Dry   2
+#> 17:             Very Dry      Extremely Dry   2
 #> 
 #> $`Impacted Records`
-#> [1] "15.21% of records changed drought class"
+#> [1] "13.52% of records changed drought class"
 #> 
 #> $Plot
 ```
