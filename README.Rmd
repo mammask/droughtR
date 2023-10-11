@@ -32,7 +32,7 @@ devtools::install_github("mammask/droughtR")
 
 ### Generate SPI and NSPI
 
-```{r, eval=TRUE, fig.height=5, fig.width=8}
+```{r, eval=TRUE, fig.height=3, fig.width=8}
 # Load droughtR library
 library(droughtR)
 
@@ -65,7 +65,7 @@ In this section, we compute the amount of bias introduced to the training set by
 
 We measure bias by computing the number of miss-classifications in the training set due to the incorrect computation of the index. We also measure the number of records impacted and share a plot of the two computational approaches.
 
-```{r, eval=TRUE, fig.height=5, fig.width=8}
+```{r, eval=TRUE, fig.height=3, fig.width=8}
 # Generate synthetic monthly rainfall data using the Gamma distribution
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
