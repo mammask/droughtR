@@ -16,7 +16,9 @@ knitr::opts_chunk$set(echo = TRUE,
 
 <img src="https://raw.githubusercontent.com/mammask/droughtr/main/man/figures/droughtR.png" align = "right" width = 120/>
 
-droughtR is an R for package that enables drought monitoring. It computes the Standardized Precipitation Index (SPI) and the Non-Standardized Precipitation Index (NSPI) using General Additive Models for Location Scale and Shape (GAMLSS).
+`droughtR` is an R for package that enables meteorological drought monitoring by generating non-stationary drought indices under various distributional assumptions (Normal, Gamma, Zero Inflated Gamma and Weibull). It computes the Standardized Precipitation Index (SPI) and the Non-Standardized Precipitation Index (NSPI) using General Additive Models for Location Scale and Shape (GAMLSS). 
+
+Since drought indices are used in various forecasting applications, `droughtR` computes potential biases introduced to the training data due to incorrect computation of the index.
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(

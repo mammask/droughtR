@@ -5,10 +5,16 @@ droughtR
 
 <img src="https://raw.githubusercontent.com/mammask/droughtr/main/man/figures/droughtR.png" align = "right" width = 120/>
 
-droughtR is an R for package that enables drought monitoring. It
-computes the Standardized Precipitation Index (SPI) and the
+`droughtR` is an R for package that enables meteorological drought
+monitoring by generating non-stationary drought indices under various
+distributional assumptions (Normal, Gamma, Zero Inflated Gamma and
+Weibull). It computes the Standardized Precipitation Index (SPI) and the
 Non-Standardized Precipitation Index (NSPI) using General Additive
 Models for Location Scale and Shape (GAMLSS).
+
+Since drought indices are used in various forecasting applications,
+`droughtR` computes potential biases introduced to the training data due
+to incorrect computation of the index.
 
 ## Installation
 
@@ -33,9 +39,9 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3506.462 
-#> GAMLSS-RS iteration 2: Global Deviance = 3506.454 
-#> GAMLSS-RS iteration 3: Global Deviance = 3506.454
+#> GAMLSS-RS iteration 1: Global Deviance = 3507.926 
+#> GAMLSS-RS iteration 2: Global Deviance = 3507.778 
+#> GAMLSS-RS iteration 3: Global Deviance = 3507.778
 
 # Plot NSPI
 plot(drought)
@@ -53,17 +59,17 @@ Split the rainfall series into training validation and test set:
 rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2)
 print(rain)
 #>          Date  Rainfall Split
-#>   1: Jan 1950  8.046479 Train
-#>   2: Feb 1950  8.398823 Train
-#>   3: Mar 1950  7.261824 Train
-#>   4: Apr 1950  7.969266 Train
-#>   5: May 1950  5.636277 Train
+#>   1: Jan 1950  6.842833 Train
+#>   2: Feb 1950 10.474097 Train
+#>   3: Mar 1950  9.006482 Train
+#>   4: Apr 1950 10.382735 Train
+#>   5: May 1950  7.735118 Train
 #>  ---                         
-#> 606: Jul 2010  7.496439  Test
-#> 607: Aug 2010  8.363361  Test
-#> 608: Sep 2010  8.578427  Test
-#> 609: Oct 2010  7.490492  Test
-#> 610: Nov 2010 14.657480  Test
+#> 606: Jul 2010  6.536480  Test
+#> 607: Aug 2010  8.233482  Test
+#> 608: Sep 2010 10.954110  Test
+#> 609: Oct 2010 10.386162  Test
+#> 610: Nov 2010  8.208174  Test
 ```
 
 #### Bias measurement
@@ -92,30 +98,30 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute bias
 bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12, dist = 'normal')
-#> GAMLSS-RS iteration 1: Global Deviance = 2190.665 
-#> GAMLSS-RS iteration 2: Global Deviance = 2190.665 
-#> GAMLSS-RS iteration 1: Global Deviance = 3568.695 
-#> GAMLSS-RS iteration 2: Global Deviance = 3568.695
+#> GAMLSS-RS iteration 1: Global Deviance = 1962.629 
+#> GAMLSS-RS iteration 2: Global Deviance = 1962.629 
+#> GAMLSS-RS iteration 1: Global Deviance = 3381.236 
+#> GAMLSS-RS iteration 2: Global Deviance = 3381.236
 bias
 #> $Transitions
 #>     Bias Corrected Class Bias Induced Class   N
-#>  1:          Near Normal     Moderately Wet   8
-#>  2:          Near Normal        Near Normal 204
-#>  3:       Moderately Wet           Very Wet  18
-#>  4:       Moderately Dry     Moderately Dry  26
-#>  5:       Moderately Dry        Near Normal   3
-#>  6:             Very Dry           Very Dry   9
-#>  7:        Extremely Dry      Extremely Dry   6
-#>  8:             Very Dry      Extremely Dry   6
-#>  9:       Moderately Wet     Moderately Wet  24
-#> 10:             Very Wet           Very Wet  15
-#> 11:             Very Wet      Extremely Wet   9
-#> 12:        Extremely Wet      Extremely Wet   9
-#> 13:          Near Normal     Moderately Dry   9
-#> 14:       Moderately Dry           Very Dry   9
+#>  1:          Near Normal        Near Normal 234
+#>  2:       Moderately Wet     Moderately Wet  18
+#>  3:             Very Dry     Moderately Dry   2
+#>  4:       Moderately Dry     Moderately Dry  34
+#>  5:             Very Dry           Very Dry  13
+#>  6:        Extremely Dry           Very Dry   1
+#>  7:       Moderately Dry        Near Normal   4
+#>  8:             Very Wet           Very Wet  13
+#>  9:        Extremely Wet      Extremely Wet  11
+#> 10:       Moderately Wet        Near Normal   8
+#> 11:        Extremely Dry      Extremely Dry   5
+#> 12:             Very Wet     Moderately Wet   6
+#> 13:          Near Normal     Moderately Dry   5
+#> 14:       Moderately Dry           Very Dry   1
 #> 
 #> $`Impacted Records`
-#> [1] "17.46% of records changed drought class"
+#> [1] "7.61% of records changed drought class"
 #> 
 #> $Plot
 ```
