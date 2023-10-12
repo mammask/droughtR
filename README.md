@@ -1,6 +1,8 @@
 droughtR
 ================
 
+[![DOI](https://zenodo.org/badge/398032827.svg)](https://zenodo.org/badge/latestdoi/398032827)
+
 <img src="https://raw.githubusercontent.com/mammask/droughtr/main/man/figures/droughtR.png" align = "right" width = 120/>
 
 droughtR is an R for package that enables drought monitoring and drought
@@ -34,15 +36,15 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3452.117 
-#> GAMLSS-RS iteration 2: Global Deviance = 3452.115 
-#> GAMLSS-RS iteration 3: Global Deviance = 3452.115
+#> GAMLSS-RS iteration 1: Global Deviance = 3480.109 
+#> GAMLSS-RS iteration 2: Global Deviance = 3480.039 
+#> GAMLSS-RS iteration 3: Global Deviance = 3480.039
 
 # Plot NSPI
 plot(drought)
 ```
 
-![](README_figs/README-unnamed-chunk-3-1.png)<!-- -->
+<img src="README_figs/README-unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
 
 ### Reduced-Bias forecasting framework
 
@@ -54,17 +56,17 @@ Split the rainfall series into training validation and test set:
 rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2)
 print(rain)
 #>          Date Rainfall Split
-#>   1: Jan 1950 5.723370 Train
-#>   2: Feb 1950 8.237526 Train
-#>   3: Mar 1950 6.619211 Train
-#>   4: Apr 1950 6.543626 Train
-#>   5: May 1950 7.698495 Train
+#>   1: Jan 1950 7.612410 Train
+#>   2: Feb 1950 9.083329 Train
+#>   3: Mar 1950 6.825299 Train
+#>   4: Apr 1950 6.887527 Train
+#>   5: May 1950 7.327183 Train
 #>  ---                        
-#> 606: Jul 2010 8.064936  Test
-#> 607: Aug 2010 8.250415  Test
-#> 608: Sep 2010 7.773182  Test
-#> 609: Oct 2010 6.995309  Test
-#> 610: Nov 2010 6.991471  Test
+#> 606: Jul 2010 7.342196  Test
+#> 607: Aug 2010 7.389638  Test
+#> 608: Sep 2010 8.389338  Test
+#> 609: Oct 2010 9.227088  Test
+#> 610: Nov 2010 8.165557  Test
 ```
 
 #### Bias measurement
@@ -93,36 +95,37 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute bias
 bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12, dist = 'normal')
-#> GAMLSS-RS iteration 1: Global Deviance = 2049.962 
-#> GAMLSS-RS iteration 2: Global Deviance = 2049.962 
-#> GAMLSS-RS iteration 1: Global Deviance = 3598.78 
-#> GAMLSS-RS iteration 2: Global Deviance = 3598.78
+#> GAMLSS-RS iteration 1: Global Deviance = 2143.999 
+#> GAMLSS-RS iteration 2: Global Deviance = 2143.999 
+#> GAMLSS-RS iteration 1: Global Deviance = 3602.639 
+#> GAMLSS-RS iteration 2: Global Deviance = 3602.639
 bias
 #> $Transitions
 #>     Bias Corrected Class Bias Induced Class   N
-#>  1:             Very Wet           Very Wet   7
-#>  2:          Near Normal        Near Normal 241
-#>  3:       Moderately Wet     Moderately Wet  24
-#>  4:          Near Normal     Moderately Wet   2
-#>  5:       Moderately Dry        Near Normal   8
-#>  6:       Moderately Dry     Moderately Dry  14
-#>  7:             Very Dry     Moderately Dry  11
-#>  8:             Very Dry           Very Dry   7
-#>  9:        Extremely Dry      Extremely Dry  11
-#> 10:        Extremely Dry           Very Dry   5
-#> 11:             Very Wet     Moderately Wet   8
-#> 12:        Extremely Wet           Very Wet   6
-#> 13:       Moderately Wet        Near Normal   6
-#> 14:        Extremely Wet      Extremely Wet   1
-#> 15:          Near Normal     Moderately Dry   4
+#>  1:          Near Normal        Near Normal 215
+#>  2:       Moderately Wet     Moderately Wet  26
+#>  3:       Moderately Wet        Near Normal   3
+#>  4:             Very Wet           Very Wet   6
+#>  5:          Near Normal     Moderately Dry   5
+#>  6:       Moderately Dry     Moderately Dry  39
+#>  7:       Moderately Dry           Very Dry   1
+#>  8:          Near Normal     Moderately Wet   9
+#>  9:       Moderately Dry        Near Normal   9
+#> 10:             Very Dry     Moderately Dry   7
+#> 11:             Very Dry           Very Dry   6
+#> 12:        Extremely Dry           Very Dry   2
+#> 13:        Extremely Dry      Extremely Dry   4
+#> 14:        Extremely Wet      Extremely Wet  15
+#> 15:             Very Wet      Extremely Wet   1
+#> 16:       Moderately Wet           Very Wet   7
 #> 
 #> $`Impacted Records`
-#> [1] "14.08% of records changed drought class"
+#> [1] "12.39% of records changed drought class"
 #> 
 #> $Plot
 ```
 
-![](README_figs/README-unnamed-chunk-5-1.png)<!-- -->
+<img src="README_figs/README-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 <!-- #### Bias Corrected auto.arima -->
 <!-- In this section, we perform out-of-sample validation using a bias corrected auto.arima to forecast the Standardized Precipitation Index (SPI). An additional parameter is introduced to forecast::auto.arima and requires fitting a S-ARIMA model: -->

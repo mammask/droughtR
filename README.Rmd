@@ -1,5 +1,6 @@
 ---
 title: "droughtR"
+link-citations: true
 output: github_document
 ---
 
@@ -10,6 +11,8 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.path = "man/figures/README-"
 )
 ```
+
+[![DOI](https://zenodo.org/badge/398032827.svg)](https://zenodo.org/badge/latestdoi/398032827)
 
 <img src="https://raw.githubusercontent.com/mammask/droughtr/main/man/figures/droughtR.png" align = "right" width = 120/>
 
@@ -32,7 +35,7 @@ devtools::install_github("mammask/droughtR")
 
 ### Generate SPI and NSPI
 
-```{r, eval=TRUE, fig.height=3, fig.width=8}
+```{r, eval=TRUE, fig.height=3, fig.width=8, fig.align='center'}
 # Load droughtR library
 library(droughtR)
 
@@ -65,7 +68,7 @@ In this section, we compute the amount of bias introduced to the training set by
 
 We measure bias by computing the number of miss-classifications in the training set due to the incorrect computation of the index. We also measure the number of records impacted and share a plot of the two computational approaches.
 
-```{r, eval=TRUE, fig.height=3, fig.width=8}
+```{r, eval=TRUE, fig.height=3, fig.width=8, fig.align='center'}
 # Generate synthetic monthly rainfall data using the Gamma distribution
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
