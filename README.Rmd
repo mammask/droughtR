@@ -1,6 +1,7 @@
 ---
 title: "droughtR"
 link-citations: true
+bibliography: references.bib
 output: github_document
 ---
 
@@ -16,9 +17,9 @@ knitr::opts_chunk$set(echo = TRUE,
 
 <img src="https://raw.githubusercontent.com/mammask/droughtr/main/man/figures/droughtR.png" align = "right" width = 120/>
 
-`droughtR` is an R for package that enables meteorological drought monitoring by generating non-stationary drought indices under various distributional assumptions (Normal, Gamma, Zero Inflated Gamma and Weibull). It computes the Standardized Precipitation Index (SPI) and the Non-Standardized Precipitation Index (NSPI) using General Additive Models for Location Scale and Shape (GAMLSS). 
+The goal of `droughtR` is to enable meteorological drought monitoring by generating non-stationary drought indices under various distributional assumptions (Normal, Gamma, Zero Inflated Gamma and Weibull). It computes the stationary (SPI) and the non-stationary (NSPI) Standardized Precipitation Indices using General Additive Models for Location Scale and Shape (GAMLSS). 
 
-Since drought indices are used in various forecasting applications, `droughtR` computes potential biases introduced to the training data due to incorrect computation of the index.
+<!-- Since drought indices are mainly used in forecasting applications, `droughtR` computes potential biases introduced during the model building process due to incorrect computation of the index. -->
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
@@ -55,20 +56,25 @@ plot(drought)
 
 #### Data Split
 
-Split the rainfall series into training validation and test set:
+You can simply split the data into train, validation and test using `oossplit`:
+
+```{r, out.width="400px", fig.align='center', echo = FALSE}
+knitr::include_graphics("./README_figs/data split.png")
+```
 
 ```{r, eval=TRUE}
+# Split the rainfall series into training validation and test set:
 rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2)
 print(rain)
 ```
 
 #### Bias measurement
 
-When the Standardized Precipitation Index is calculated as part of a forecasting task it can potentially introduce biases in the training data. This is mainly because in many cases the index is computed using the entire data, prior to model validation, and this violates some of the fundamental principles of time series forecasting theory.
+When the Standardized Precipitation Index is calculated as part of a forecasting task it introduces biases in the training data. This is mainly observed when the index is computed using the entire data, prior to model validation, and this violates some of the fundamental principles of time series forecasting theory [@mammas2021characterization].
 
-In this section, we compute the amount of bias introduced to the training set by measuring the number of miss-classifications in the training data. Two computational approaches are presented: 1) SPI is computed using the training data only; we call this as "Bias Corrected" computation and 2) SPI is computed using the entire data; we call this as "Bias Induced" computation. 
+In this section, the amount of bias introduced to the training data is quantified by measuring the number of miss-classifications when two computational approaches are followed: 1) SPI is computed using the training data only; this is called a "Bias Corrected" computation and 2) SPI is computed using the entire data; this is called a "Bias Induced" computation. 
 
-We measure bias by computing the number of miss-classifications in the training set due to the incorrect computation of the index. We also measure the number of records impacted and share a plot of the two computational approaches.
+Bias is measured by computing the number of miss-classifications in the training data due to the incorrect computation of the index.
 
 ```{r, eval=TRUE, fig.height=3, fig.width=8, fig.align='center'}
 # Generate synthetic monthly rainfall data using the Gamma distribution
@@ -78,6 +84,8 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12, dist = 'normal')
 bias
 ```
+
+### References
 
 <!-- #### Bias Corrected auto.arima -->
 
