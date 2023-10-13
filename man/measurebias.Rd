@@ -11,7 +11,7 @@ measurebias(
   testratio,
   stationaryspi,
   spiscale,
-  dist
+  dist = "gamma"
 )
 }
 \arguments{

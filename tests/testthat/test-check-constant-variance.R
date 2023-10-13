@@ -23,11 +23,11 @@ test_that("index variance is not constant", {
     monthlyRainfall = data.table::data.table(Date = dateSeq, Rainfall = x)
 
     # Compute NSPI
-    nspi = copy(computenspi(monthlyRainfall, F, 12, 'gamma'))
+    nspi = copy(computenspi(monthlyRainfall, F, 12, 'gamma'))[['drought index']]
     nspisd = sd(nspi[['NSPI']], na.rm = TRUE)
 
     # Compute SPI
-    spi  = copy(computenspi(monthlyRainfall, T, 12, 'gamma'))
+    spi  = copy(computenspi(monthlyRainfall, T, 12, 'gamma'))[['drought index']]
     spisd = sd(spi[['SPI']], na.rm = TRUE)
 
     rm(monthlyRainfall)

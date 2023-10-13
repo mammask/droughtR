@@ -19,15 +19,15 @@
 #' @export
 plot.drought = function(x,label=TRUE, log=TRUE, type = "drought", ...){
 
-  if ("SPI" %in% names(x)){
+  if ("SPI" %in% names(x[["drought index"]])){
     droughtindex = "SPI"
   } else {
     droughtindex = "NSPI"
   }
 
-  setDT(x)
+  setDT(x[['drought index']])
 
-  ggplot2::ggplot(data = x[stats::complete.cases(x)]) +
+  ggplot2::ggplot(data = x[['drought index']][stats::complete.cases(x[['drought index']])]) +
     geom_bar(aes(x = Date, y = eval(parse(text = droughtindex))),
              position = "dodge",
              stat = "identity"

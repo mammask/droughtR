@@ -34,7 +34,7 @@ compdist = function(x, mDist, stationaryspi, spiScale){
   spiList = list()
   for (i in mDist){
 
-    spiList[[i]] = copy(computenspi(x, stationaryspi, spiScale, i))
+    spiList[[i]] = copy(computenspi(x, stationaryspi, spiScale, i)[["drought index"]])
     spiList[[i]][, Distribution := i]
   }
 

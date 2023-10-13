@@ -38,6 +38,8 @@ devtools::install_github("mammask/droughtR")
 
 ### Generate SPI and NSPI
 
+The function `computenspi` creates stationary and non-stationary meteorological drought indices at different time scales. By default, droughtR uses the gamma distribution:
+
 ```{r, eval=TRUE, fig.height=3, fig.width=8, fig.align='center'}
 # Load droughtR library
 library(droughtR)
@@ -52,15 +54,40 @@ drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'ga
 plot(drought)
 ```
 
-### Reduced-Bias forecasting framework
+#### Model-Based Comparison of Drought Indices
+
+Using droughtR, we can compute indices under various distribution assumptions and then compare their fit according to how well they describe the data. In the following example, we generated synthetic rainfall data using the gamma distribution and then we created two non-stationary drought indices using the gamma and weibull distributions accordingly.
+
+```{r, eval=TRUE, fig.align='center'}
+# Generate a synthetic rainfall dataset
+rainfall = dummyrainfall(startYear = 1950, endYear = 2023)
+
+# Create a non-stationary meteorological index under the gamma distribution assumption
+gammaIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')[["model"]]
+
+# Plot the model diagnostics 
+plot(gammaIndex)
+
+# Create a non-stationary meteorological index under the weibull distribution assumption
+weibullIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
+
+plot(weibullIndex)
+```
+
+As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS model residuals suggest that the non-stationary index under the gamma distribution has a better fit.
+
+In this example, `GAIC()` is used to compare the two model-based drought indices using the AIC:
+
+```{r, eval = TRUE}
+library(gamlss)
+
+# Compare the two model based implementations using AIC
+GAIC(gammaIndex, weibullIndex)
+```
 
 #### Data Split
 
-You can simply split the data into train, validation and test using `oossplit`:
-
-```{r, out.width="400px", fig.align='center', echo = FALSE}
-knitr::include_graphics("./README_figs/data split.png")
-```
+The `oossplit` function splits the data into train, validation and test sets:
 
 ```{r, eval=TRUE}
 # Split the rainfall series into training validation and test set:

@@ -28,12 +28,11 @@
 #'             spiScale = 12,
 #'             dist = 'gamma'
 #'             )
-computenspi = function(x, stationaryspi, spiScale, dist){
-
+computenspi = function(x, stationaryspi, spiScale, dist='gamma'){
   setDT(x)
   monthlyRainfall = copy(x)
   monthlyRainfall[, Date := as.yearmon(Date)]
-
+  mIndex = list()
 
   if (base::inherits(stationaryspi, "logical", which = FALSE) == FALSE){
     stop("stationarity should be of type logical")
@@ -99,7 +98,6 @@ computenspi = function(x, stationaryspi, spiScale, dist){
                          family = familyDist
   )
 
-
   # Obtain the response of GAMLSS
   pred = predictAll(model,
                     data = monthlyRainfall[stats::complete.cases(monthlyRainfall), c("AccumPrecip", "Trend"), with = F],
@@ -114,8 +112,10 @@ computenspi = function(x, stationaryspi, spiScale, dist){
   # Calculate NSPI
   monthlyRainfall[stats::complete.cases(monthlyRainfall), c(ifelse(stationaryspi, "SPI", "NSPI")) := qnorm(ecdfm)][]
 
+  mIndex[['model']] = model
+  mIndex[['drought index']] = monthlyRainfall
 
-  class(monthlyRainfall) = c("drought", class(monthlyRainfall))
+  class(mIndex) = c("drought", class(mIndex))
 
-  return(monthlyRainfall)
+  return(mIndex)
 }

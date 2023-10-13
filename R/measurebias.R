@@ -18,7 +18,7 @@
 #'
 #' @examples rainfall = dummyrainfall(1950, 2000)
 #' measurebias(rainfall, 0.6, 0.2, 0.2, TRUE, 12, "normal")
-measurebias = function(x, trainratio, validationratio, testratio, stationaryspi, spiscale, dist){
+measurebias = function(x, trainratio, validationratio, testratio, stationaryspi, spiscale, dist = 'gamma'){
 
   setDT(x)
 
@@ -26,11 +26,11 @@ measurebias = function(x, trainratio, validationratio, testratio, stationaryspi,
   x = oossplit(x, trainratio, validationratio, testratio)
 
   # Compute the index in the training set only
-  biascorrindex = data.table::copy(computenspi(x[Split == 'Train'], stationaryspi, spiscale, dist))
+  biascorrindex = data.table::copy(computenspi(x[Split == 'Train'], stationaryspi, spiscale, dist)[["drought index"]])
   biascorrindex[, Status := "Bias Corrected"]
 
   # Compute the index in the trasining, validation and test sets
-  biasedindex = data.table::copy(computenspi(x, stationaryspi, spiscale, dist))
+  biasedindex = data.table::copy(computenspi(x, stationaryspi, spiscale, dist)[["drought index"]])
   biasedindex[, Status := "Bias Induced"]
 
   if (stationaryspi == TRUE){

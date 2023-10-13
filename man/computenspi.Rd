@@ -4,7 +4,7 @@
 \alias{computenspi}
 \title{computenspi}
 \usage{
-computenspi(x, stationaryspi, spiScale, dist)
+computenspi(x, stationaryspi, spiScale, dist = "gamma")
 }
 \arguments{
 \item{x}{data.table}
