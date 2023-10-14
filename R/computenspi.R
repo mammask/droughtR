@@ -92,7 +92,7 @@ computenspi = function(x, stationaryspi, spiScale, dist='gamma'){
   modelFormula = ifelse(stationaryspi,  "AccumPrecip ~ 1", "AccumPrecip ~ Trend")
 
   # Fit GAMLSS model that varies in shape and scale
-  model = gamlss::gamlss(formula = AccumPrecip ~ Trend,
+  model = gamlss::gamlss(formula = as.formula(modelFormula),
                          sigma.formula = as.formula(modelFormula),
                          data = monthlyRainfall[stats::complete.cases(monthlyRainfall)],
                          family = familyDist

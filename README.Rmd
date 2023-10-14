@@ -68,6 +68,10 @@ gammaIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dis
 # Plot the model diagnostics 
 plot(gammaIndex)
 
+```
+
+
+```{r, eval=TRUE, fig.align='center'}
 # Create a non-stationary meteorological index under the weibull distribution assumption
 weibullIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
 

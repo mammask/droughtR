@@ -41,9 +41,8 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3310.748 
-#> GAMLSS-RS iteration 2: Global Deviance = 3310.49 
-#> GAMLSS-RS iteration 3: Global Deviance = 3310.49
+#> GAMLSS-RS iteration 1: Global Deviance = 3657.342 
+#> GAMLSS-RS iteration 2: Global Deviance = 3657.342
 
 # Plot NSPI
 plot(drought)
@@ -66,10 +65,9 @@ rainfall = dummyrainfall(startYear = 1950, endYear = 2023)
 
 # Create a non-stationary meteorological index under the gamma distribution assumption
 gammaIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')[["model"]]
-#> GAMLSS-RS iteration 1: Global Deviance = 4220.338 
-#> GAMLSS-RS iteration 2: Global Deviance = 4219.897 
-#> GAMLSS-RS iteration 3: Global Deviance = 4219.894 
-#> GAMLSS-RS iteration 4: Global Deviance = 4219.894
+#> GAMLSS-RS iteration 1: Global Deviance = 4210.288 
+#> GAMLSS-RS iteration 2: Global Deviance = 4210.241 
+#> GAMLSS-RS iteration 3: Global Deviance = 4210.241
 
 # Plot the model diagnostics 
 plot(gammaIndex)
@@ -79,32 +77,33 @@ plot(gammaIndex)
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.0004645257 
-    #>                        variance   =  1.001428 
-    #>                coef. of skewness  =  -0.3648898 
-    #>                coef. of kurtosis  =  2.836916 
-    #> Filliben correlation coefficient  =  0.9942522 
+    #>                            mean   =  0.0001126146 
+    #>                        variance   =  1.001387 
+    #>                coef. of skewness  =  -0.01289899 
+    #>                coef. of kurtosis  =  2.822221 
+    #> Filliben correlation coefficient  =  0.9992407 
     #> ******************************************************************
 
-    # Create a non-stationary meteorological index under the weibull distribution assumption
-    weibullIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
-    #> GAMLSS-RS iteration 1: Global Deviance = 4228.044 
-    #> GAMLSS-RS iteration 2: Global Deviance = 4225.758 
-    #> GAMLSS-RS iteration 3: Global Deviance = 4225.714 
-    #> GAMLSS-RS iteration 4: Global Deviance = 4225.712 
-    #> GAMLSS-RS iteration 5: Global Deviance = 4225.712
+``` r
+# Create a non-stationary meteorological index under the weibull distribution assumption
+weibullIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
+#> GAMLSS-RS iteration 1: Global Deviance = 4316.365 
+#> GAMLSS-RS iteration 2: Global Deviance = 4307.14 
+#> GAMLSS-RS iteration 3: Global Deviance = 4307.069 
+#> GAMLSS-RS iteration 4: Global Deviance = 4307.068
 
-    plot(weibullIndex)
+plot(weibullIndex)
+```
 
-<img src="README_figs/README-unnamed-chunk-4-2.png" style="display: block; margin: auto;" />
+<img src="README_figs/README-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.005663939 
-    #>                        variance   =  0.9404692 
-    #>                coef. of skewness  =  0.4193841 
-    #>                coef. of kurtosis  =  2.961977 
-    #> Filliben correlation coefficient  =  0.9932369 
+    #>                            mean   =  0.01650951 
+    #>                        variance   =  0.8769988 
+    #>                coef. of skewness  =  0.9234866 
+    #>                coef. of kurtosis  =  4.718402 
+    #> Filliben correlation coefficient  =  0.9783698 
     #> ******************************************************************
 
 As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS
@@ -133,8 +132,8 @@ library(gamlss)
 # Compare the two model based implementations using AIC
 GAIC(gammaIndex, weibullIndex)
 #>              df      AIC
-#> gammaIndex    4 4227.894
-#> weibullIndex  4 4233.712
+#> gammaIndex    4 4218.241
+#> weibullIndex  4 4315.068
 ```
 
 #### Data Split
@@ -147,17 +146,17 @@ sets:
 rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2)
 print(rain)
 #>          Date Rainfall Split
-#>   1: Jan 1950 9.138443 Train
-#>   2: Feb 1950 7.098604 Train
-#>   3: Mar 1950 9.025275 Train
-#>   4: Apr 1950 6.285809 Train
-#>   5: May 1950 9.120874 Train
+#>   1: Jan 1950 5.913150 Train
+#>   2: Feb 1950 8.714976 Train
+#>   3: Mar 1950 6.594948 Train
+#>   4: Apr 1950 6.611078 Train
+#>   5: May 1950 8.180176 Train
 #>  ---                        
-#> 606: Jul 2010 8.220249  Test
-#> 607: Aug 2010 7.782283  Test
-#> 608: Sep 2010 7.153345  Test
-#> 609: Oct 2010 8.361481  Test
-#> 610: Nov 2010 7.915945  Test
+#> 606: Jul 2010 7.452418  Test
+#> 607: Aug 2010 8.353061  Test
+#> 608: Sep 2010 8.217178  Test
+#> 609: Oct 2010 6.945326  Test
+#> 610: Nov 2010 7.726739  Test
 ```
 
 #### Bias measurement
@@ -185,30 +184,35 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute bias
 bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12, dist = 'normal')
-#> GAMLSS-RS iteration 1: Global Deviance = 2100.173 
-#> GAMLSS-RS iteration 2: Global Deviance = 2100.173 
-#> GAMLSS-RS iteration 1: Global Deviance = 3511.566 
-#> GAMLSS-RS iteration 2: Global Deviance = 3511.566
+#> GAMLSS-RS iteration 1: Global Deviance = 1981.114 
+#> GAMLSS-RS iteration 2: Global Deviance = 1981.114 
+#> GAMLSS-RS iteration 1: Global Deviance = 3446.701 
+#> GAMLSS-RS iteration 2: Global Deviance = 3446.701
 bias
 #> $Transitions
-#>    Bias Corrected Class Bias Induced Class   N
-#> 1:          Near Normal        Near Normal 238
-#> 2:       Moderately Dry     Moderately Dry  26
-#> 3:             Very Dry           Very Dry  19
-#> 4:             Very Wet           Very Wet  19
-#> 5:       Moderately Wet     Moderately Wet  24
-#> 6:        Extremely Dry      Extremely Dry   6
-#> 7:          Near Normal     Moderately Wet   4
-#> 8:       Moderately Wet           Very Wet   5
-#> 9:        Extremely Wet      Extremely Wet  14
+#>     Bias Corrected Class Bias Induced Class   N
+#>  1:          Near Normal        Near Normal 250
+#>  2:       Moderately Dry     Moderately Dry  30
+#>  3:       Moderately Wet     Moderately Wet  19
+#>  4:        Extremely Wet           Very Wet   4
+#>  5:        Extremely Wet      Extremely Wet  13
+#>  6:             Very Wet           Very Wet  10
+#>  7:             Very Dry           Very Dry   7
+#>  8:       Moderately Wet        Near Normal   6
+#>  9:             Very Dry     Moderately Dry   3
+#> 10:       Moderately Dry        Near Normal   5
+#> 11:        Extremely Dry           Very Dry   4
+#> 12:        Extremely Dry      Extremely Dry   1
+#> 13:             Very Wet     Moderately Wet   1
+#> 14:          Near Normal     Moderately Wet   2
 #> 
 #> $`Impacted Records`
-#> [1] "2.54% of records changed drought class"
+#> [1] "7.04% of records changed drought class"
 #> 
 #> $Plot
 ```
 
-<img src="README_figs/README-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+<img src="README_figs/README-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
 
 ### References
 
