@@ -41,8 +41,9 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3657.342 
-#> GAMLSS-RS iteration 2: Global Deviance = 3657.342
+#> GAMLSS-RS iteration 1: Global Deviance = 3601.872 
+#> GAMLSS-RS iteration 2: Global Deviance = 3601.729 
+#> GAMLSS-RS iteration 3: Global Deviance = 3601.728
 
 # Plot NSPI
 plot(drought)
@@ -65,9 +66,11 @@ rainfall = dummyrainfall(startYear = 1950, endYear = 2023)
 
 # Create a non-stationary meteorological index under the gamma distribution assumption
 gammaIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')[["model"]]
-#> GAMLSS-RS iteration 1: Global Deviance = 4210.288 
-#> GAMLSS-RS iteration 2: Global Deviance = 4210.241 
-#> GAMLSS-RS iteration 3: Global Deviance = 4210.241
+#> GAMLSS-RS iteration 1: Global Deviance = 4282.293 
+#> GAMLSS-RS iteration 2: Global Deviance = 4277.814 
+#> GAMLSS-RS iteration 3: Global Deviance = 4277.742 
+#> GAMLSS-RS iteration 4: Global Deviance = 4277.741 
+#> GAMLSS-RS iteration 5: Global Deviance = 4277.741
 
 # Plot the model diagnostics 
 plot(gammaIndex)
@@ -77,20 +80,20 @@ plot(gammaIndex)
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.0001126146 
-    #>                        variance   =  1.001387 
-    #>                coef. of skewness  =  -0.01289899 
-    #>                coef. of kurtosis  =  2.822221 
-    #> Filliben correlation coefficient  =  0.9992407 
+    #>                            mean   =  -0.003033419 
+    #>                        variance   =  1.000969 
+    #>                coef. of skewness  =  -0.03319239 
+    #>                coef. of kurtosis  =  2.943276 
+    #> Filliben correlation coefficient  =  0.9941738 
     #> ******************************************************************
 
 ``` r
 # Create a non-stationary meteorological index under the weibull distribution assumption
 weibullIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
-#> GAMLSS-RS iteration 1: Global Deviance = 4316.365 
-#> GAMLSS-RS iteration 2: Global Deviance = 4307.14 
-#> GAMLSS-RS iteration 3: Global Deviance = 4307.069 
-#> GAMLSS-RS iteration 4: Global Deviance = 4307.068
+#> GAMLSS-RS iteration 1: Global Deviance = 4362.413 
+#> GAMLSS-RS iteration 2: Global Deviance = 4356.778 
+#> GAMLSS-RS iteration 3: Global Deviance = 4356.731 
+#> GAMLSS-RS iteration 4: Global Deviance = 4356.73
 
 plot(weibullIndex)
 ```
@@ -99,11 +102,11 @@ plot(weibullIndex)
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.01650951 
-    #>                        variance   =  0.8769988 
-    #>                coef. of skewness  =  0.9234866 
-    #>                coef. of kurtosis  =  4.718402 
-    #> Filliben correlation coefficient  =  0.9783698 
+    #>                            mean   =  0.01458056 
+    #>                        variance   =  0.8981927 
+    #>                coef. of skewness  =  0.7728783 
+    #>                coef. of kurtosis  =  5.151999 
+    #> Filliben correlation coefficient  =  0.9814182 
     #> ******************************************************************
 
 As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS
@@ -132,90 +135,29 @@ library(gamlss)
 # Compare the two model based implementations using AIC
 GAIC(gammaIndex, weibullIndex)
 #>              df      AIC
-#> gammaIndex    4 4218.241
-#> weibullIndex  4 4315.068
+#> gammaIndex    4 4285.741
+#> weibullIndex  4 4364.730
 ```
 
-#### Data Split
-
-The `oossplit` function splits the data into train, validation and test
-sets:
-
-``` r
-# Split the rainfall series into training validation and test set:
-rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2)
-print(rain)
-#>          Date Rainfall Split
-#>   1: Jan 1950 5.913150 Train
-#>   2: Feb 1950 8.714976 Train
-#>   3: Mar 1950 6.594948 Train
-#>   4: Apr 1950 6.611078 Train
-#>   5: May 1950 8.180176 Train
-#>  ---                        
-#> 606: Jul 2010 7.452418  Test
-#> 607: Aug 2010 8.353061  Test
-#> 608: Sep 2010 8.217178  Test
-#> 609: Oct 2010 6.945326  Test
-#> 610: Nov 2010 7.726739  Test
-```
-
-#### Bias measurement
-
-When the Standardized Precipitation Index is calculated as part of a
-forecasting task it introduces biases in the training data. This is
-mainly observed when the index is computed using the entire data, prior
-to model validation, and this violates some of the fundamental
-principles of time series forecasting theory ([Mammas and Lekkas
-2021](#ref-mammas2021characterization)).
-
-In this section, the amount of bias introduced to the training data is
-quantified by measuring the number of miss-classifications when two
-computational approaches are followed: 1) SPI is computed using the
-training data only; this is called a “Bias Corrected” computation and 2)
-SPI is computed using the entire data; this is called a “Bias Induced”
-computation.
-
-Bias is measured by computing the number of miss-classifications in the
-training data due to the incorrect computation of the index.
-
-``` r
-# Generate synthetic monthly rainfall data using the Gamma distribution
-rain = dummyrainfall(startYear = 1950, endYear = 2010)
-
-# Compute bias
-bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12, dist = 'normal')
-#> GAMLSS-RS iteration 1: Global Deviance = 1981.114 
-#> GAMLSS-RS iteration 2: Global Deviance = 1981.114 
-#> GAMLSS-RS iteration 1: Global Deviance = 3446.701 
-#> GAMLSS-RS iteration 2: Global Deviance = 3446.701
-bias
-#> $Transitions
-#>     Bias Corrected Class Bias Induced Class   N
-#>  1:          Near Normal        Near Normal 250
-#>  2:       Moderately Dry     Moderately Dry  30
-#>  3:       Moderately Wet     Moderately Wet  19
-#>  4:        Extremely Wet           Very Wet   4
-#>  5:        Extremely Wet      Extremely Wet  13
-#>  6:             Very Wet           Very Wet  10
-#>  7:             Very Dry           Very Dry   7
-#>  8:       Moderately Wet        Near Normal   6
-#>  9:             Very Dry     Moderately Dry   3
-#> 10:       Moderately Dry        Near Normal   5
-#> 11:        Extremely Dry           Very Dry   4
-#> 12:        Extremely Dry      Extremely Dry   1
-#> 13:             Very Wet     Moderately Wet   1
-#> 14:          Near Normal     Moderately Wet   2
-#> 
-#> $`Impacted Records`
-#> [1] "7.04% of records changed drought class"
-#> 
-#> $Plot
-```
-
-<img src="README_figs/README-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
-
-### References
-
+<!-- #### Data Split -->
+<!-- The `oossplit` function splits the data into train, validation and test sets: -->
+<!-- ```{r, eval=TRUE} -->
+<!-- # Split the rainfall series into training validation and test set: -->
+<!-- rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2) -->
+<!-- print(rain) -->
+<!-- ``` -->
+<!-- #### Bias measurement -->
+<!-- When the Standardized Precipitation Index is calculated as part of a forecasting task it introduces biases in the training data. This is mainly observed when the index is computed using the entire data, prior to model validation, and this violates some of the fundamental principles of time series forecasting theory [@mammas2021characterization]. -->
+<!-- In this section, the amount of bias introduced to the training data is quantified by measuring the number of miss-classifications when two computational approaches are followed: 1) SPI is computed using the training data only; this is called a "Bias Corrected" computation and 2) SPI is computed using the entire data; this is called a "Bias Induced" computation.  -->
+<!-- Bias is measured by computing the number of miss-classifications in the training data due to the incorrect computation of the index. -->
+<!-- ```{r, eval=TRUE, fig.height=3, fig.width=8, fig.align='center'} -->
+<!-- # Generate synthetic monthly rainfall data using the Gamma distribution -->
+<!-- rain = dummyrainfall(startYear = 1950, endYear = 2010) -->
+<!-- # Compute bias -->
+<!-- bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12, dist = 'normal') -->
+<!-- bias -->
+<!-- ``` -->
+<!-- ### References -->
 <!-- #### Bias Corrected auto.arima -->
 <!-- In this section, we perform out-of-sample validation using a bias corrected auto.arima to forecast the Standardized Precipitation Index (SPI). An additional parameter is introduced to forecast::auto.arima and requires fitting a S-ARIMA model: -->
 <!-- ```{r, eval=TRUE, fig.height=3, fig.width=5} -->
@@ -242,15 +184,3 @@ bias
 <!-- Additional models are developed and can be found here: -->
 <!-- * Bias induced auto.arima -->
 <!-- * Bias corrected modwt auto.arima -->
-
-<div id="refs" class="references csl-bib-body hanging-indent">
-
-<div id="ref-mammas2021characterization" class="csl-entry">
-
-Mammas, Konstantinos, and Demetris F Lekkas. 2021. “Characterization of
-Bias During Meteorological Drought Calculation in Time Series
-Out-of-Sample Validation.” *Water* 13 (18): 2531.
-
-</div>
-
-</div>

@@ -89,34 +89,34 @@ library(gamlss)
 GAIC(gammaIndex, weibullIndex)
 ```
 
-#### Data Split
+<!-- #### Data Split -->
 
-The `oossplit` function splits the data into train, validation and test sets:
+<!-- The `oossplit` function splits the data into train, validation and test sets: -->
 
-```{r, eval=TRUE}
-# Split the rainfall series into training validation and test set:
-rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2)
-print(rain)
-```
+<!-- ```{r, eval=TRUE} -->
+<!-- # Split the rainfall series into training validation and test set: -->
+<!-- rain = oossplit(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2) -->
+<!-- print(rain) -->
+<!-- ``` -->
 
-#### Bias measurement
+<!-- #### Bias measurement -->
 
-When the Standardized Precipitation Index is calculated as part of a forecasting task it introduces biases in the training data. This is mainly observed when the index is computed using the entire data, prior to model validation, and this violates some of the fundamental principles of time series forecasting theory [@mammas2021characterization].
+<!-- When the Standardized Precipitation Index is calculated as part of a forecasting task it introduces biases in the training data. This is mainly observed when the index is computed using the entire data, prior to model validation, and this violates some of the fundamental principles of time series forecasting theory [@mammas2021characterization]. -->
 
-In this section, the amount of bias introduced to the training data is quantified by measuring the number of miss-classifications when two computational approaches are followed: 1) SPI is computed using the training data only; this is called a "Bias Corrected" computation and 2) SPI is computed using the entire data; this is called a "Bias Induced" computation. 
+<!-- In this section, the amount of bias introduced to the training data is quantified by measuring the number of miss-classifications when two computational approaches are followed: 1) SPI is computed using the training data only; this is called a "Bias Corrected" computation and 2) SPI is computed using the entire data; this is called a "Bias Induced" computation.  -->
 
-Bias is measured by computing the number of miss-classifications in the training data due to the incorrect computation of the index.
+<!-- Bias is measured by computing the number of miss-classifications in the training data due to the incorrect computation of the index. -->
 
-```{r, eval=TRUE, fig.height=3, fig.width=8, fig.align='center'}
-# Generate synthetic monthly rainfall data using the Gamma distribution
-rain = dummyrainfall(startYear = 1950, endYear = 2010)
+<!-- ```{r, eval=TRUE, fig.height=3, fig.width=8, fig.align='center'} -->
+<!-- # Generate synthetic monthly rainfall data using the Gamma distribution -->
+<!-- rain = dummyrainfall(startYear = 1950, endYear = 2010) -->
 
-# Compute bias
-bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12, dist = 'normal')
-bias
-```
+<!-- # Compute bias -->
+<!-- bias = measurebias(x = rain, trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = TRUE, spiscale = 12, dist = 'normal') -->
+<!-- bias -->
+<!-- ``` -->
 
-### References
+<!-- ### References -->
 
 <!-- #### Bias Corrected auto.arima -->
 
