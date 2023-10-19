@@ -3,7 +3,7 @@ droughtR
 
 [![DOI](https://zenodo.org/badge/398032827.svg)](https://zenodo.org/doi/10.5281/zenodo.10009276)
 
-<img src="C:/Users/u1098519/OneDrive - IQVIA/Packages/droughtR/man/figures/droughtR-2.png" align = "left" width = 120/>
+<img src="https://raw.githubusercontent.com/mammask/droughtR/main/man/figures/droughtR-2.png" align = "right" width = 120/>
 
 The goal of `droughtR` is to enable meteorological drought monitoring by
 generating non-stationary drought indices under various distributional
@@ -41,8 +41,9 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3438.05 
-#> GAMLSS-RS iteration 2: Global Deviance = 3438.05
+#> GAMLSS-RS iteration 1: Global Deviance = 3325.856 
+#> GAMLSS-RS iteration 2: Global Deviance = 3325.841 
+#> GAMLSS-RS iteration 3: Global Deviance = 3325.841
 
 # Plot NSPI
 plot(drought)
@@ -62,8 +63,9 @@ accordingly.
 ``` r
 # Create a non-stationary meteorological index under the gamma distribution assumption
 gammaIndex = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')[["model"]]
-#> GAMLSS-RS iteration 1: Global Deviance = 3438.05 
-#> GAMLSS-RS iteration 2: Global Deviance = 3438.05
+#> GAMLSS-RS iteration 1: Global Deviance = 3325.856 
+#> GAMLSS-RS iteration 2: Global Deviance = 3325.841 
+#> GAMLSS-RS iteration 3: Global Deviance = 3325.841
 
 # Plot the model diagnostics 
 plot(gammaIndex)
@@ -73,20 +75,20 @@ plot(gammaIndex)
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  2.393075e-05 
-    #>                        variance   =  1.001673 
-    #>                coef. of skewness  =  -0.4076712 
-    #>                coef. of kurtosis  =  3.131582 
-    #> Filliben correlation coefficient  =  0.9936565 
+    #>                            mean   =  3.408986e-05 
+    #>                        variance   =  1.001675 
+    #>                coef. of skewness  =  -0.1349683 
+    #>                coef. of kurtosis  =  2.89866 
+    #> Filliben correlation coefficient  =  0.9976263 
     #> ******************************************************************
 
 ``` r
 # Create a non-stationary meteorological index under the weibull distribution assumption
 weibullIndex = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
-#> GAMLSS-RS iteration 1: Global Deviance = 3445.451 
-#> GAMLSS-RS iteration 2: Global Deviance = 3443.97 
-#> GAMLSS-RS iteration 3: Global Deviance = 3443.957 
-#> GAMLSS-RS iteration 4: Global Deviance = 3443.956
+#> GAMLSS-RS iteration 1: Global Deviance = 3387.442 
+#> GAMLSS-RS iteration 2: Global Deviance = 3383.89 
+#> GAMLSS-RS iteration 3: Global Deviance = 3383.851 
+#> GAMLSS-RS iteration 4: Global Deviance = 3383.85
 
 plot(weibullIndex)
 ```
@@ -95,11 +97,11 @@ plot(weibullIndex)
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.0066659 
-    #>                        variance   =  0.9350294 
-    #>                coef. of skewness  =  0.4489257 
-    #>                coef. of kurtosis  =  3.026621 
-    #> Filliben correlation coefficient  =  0.9922757 
+    #>                            mean   =  0.01316462 
+    #>                        variance   =  0.8946264 
+    #>                coef. of skewness  =  0.7574736 
+    #>                coef. of kurtosis  =  3.754292 
+    #> Filliben correlation coefficient  =  0.9827289 
     #> ******************************************************************
 
 As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS
@@ -128,8 +130,8 @@ library(gamlss)
 # Compare the two model based implementations using AIC
 GAIC(gammaIndex, weibullIndex)
 #>              df      AIC
-#> gammaIndex    4 3446.050
-#> weibullIndex  4 3451.956
+#> gammaIndex    4 3333.841
+#> weibullIndex  4 3391.850
 ```
 
 <!-- #### Data Split -->

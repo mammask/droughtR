@@ -15,6 +15,8 @@ knitr::opts_chunk$set(echo = TRUE,
 
 [![DOI](https://zenodo.org/badge/398032827.svg)](https://zenodo.org/doi/10.5281/zenodo.10009276)
 
+<img src="https://raw.githubusercontent.com/mammask/droughtR/main/man/figures/droughtR-2.png" align = "right" width = 120/>
+
 The goal of `droughtR` is to enable meteorological drought monitoring by generating non-stationary drought indices under various distributional assumptions (Normal, Gamma, Zero Inflated Gamma and Weibull). It computes the stationary (SPI) and the non-stationary (NSPI) Standardized Precipitation Indices using General Additive Models for Location Scale and Shape (GAMLSS). 
 
 <!-- Since drought indices are mainly used in forecasting applications, `droughtR` computes potential biases introduced during the model building process due to incorrect computation of the index. -->
