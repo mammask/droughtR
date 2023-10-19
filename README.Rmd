@@ -13,9 +13,7 @@ knitr::opts_chunk$set(echo = TRUE,
 )
 ```
 
-[![DOI](https://zenodo.org/badge/398032827.svg)](https://zenodo.org/badge/latestdoi/398032827)
-
-<img src="https://raw.githubusercontent.com/mammask/droughtr/main/man/figures/droughtR.png" align = "right" width = 120/>
+[![DOI](https://zenodo.org/badge/398032827.svg)](https://zenodo.org/doi/10.5281/zenodo.10009276)
 
 The goal of `droughtR` is to enable meteorological drought monitoring by generating non-stationary drought indices under various distributional assumptions (Normal, Gamma, Zero Inflated Gamma and Weibull). It computes the stationary (SPI) and the non-stationary (NSPI) Standardized Precipitation Indices using General Additive Models for Location Scale and Shape (GAMLSS). 
 
@@ -54,16 +52,13 @@ drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'ga
 plot(drought)
 ```
 
-#### Model-Based Comparison of Drought Indices
+### Model-Based Comparison of Drought Indices
 
 Using droughtR, we can compute indices under various distribution assumptions and then compare their fit according to how well they describe the data. In the following example, we generated synthetic rainfall data using the gamma distribution and then we created two non-stationary drought indices using the gamma and weibull distributions accordingly.
 
 ```{r, eval=TRUE, fig.align='center'}
-# Generate a synthetic rainfall dataset
-rainfall = dummyrainfall(startYear = 1950, endYear = 2023)
-
 # Create a non-stationary meteorological index under the gamma distribution assumption
-gammaIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')[["model"]]
+gammaIndex = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')[["model"]]
 
 # Plot the model diagnostics 
 plot(gammaIndex)
@@ -73,7 +68,7 @@ plot(gammaIndex)
 
 ```{r, eval=TRUE, fig.align='center'}
 # Create a non-stationary meteorological index under the weibull distribution assumption
-weibullIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
+weibullIndex = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
 
 plot(weibullIndex)
 ```

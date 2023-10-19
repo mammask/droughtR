@@ -1,9 +1,9 @@
 droughtR
 ================
 
-[![DOI](https://zenodo.org/badge/398032827.svg)](https://zenodo.org/badge/latestdoi/398032827)
+[![DOI](https://zenodo.org/badge/398032827.svg)](https://zenodo.org/doi/10.5281/zenodo.10009276)
 
-<img src="https://raw.githubusercontent.com/mammask/droughtr/main/man/figures/droughtR.png" align = "right" width = 120/>
+<img src="C:/Users/u1098519/OneDrive - IQVIA/Packages/droughtR/man/figures/droughtR-2.png" align = "left" width = 120/>
 
 The goal of `droughtR` is to enable meteorological drought monitoring by
 generating non-stationary drought indices under various distributional
@@ -41,9 +41,8 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3601.872 
-#> GAMLSS-RS iteration 2: Global Deviance = 3601.729 
-#> GAMLSS-RS iteration 3: Global Deviance = 3601.728
+#> GAMLSS-RS iteration 1: Global Deviance = 3438.05 
+#> GAMLSS-RS iteration 2: Global Deviance = 3438.05
 
 # Plot NSPI
 plot(drought)
@@ -51,7 +50,7 @@ plot(drought)
 
 <img src="README_figs/README-unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
 
-#### Model-Based Comparison of Drought Indices
+### Model-Based Comparison of Drought Indices
 
 Using droughtR, we can compute indices under various distribution
 assumptions and then compare their fit according to how well they
@@ -61,16 +60,10 @@ non-stationary drought indices using the gamma and weibull distributions
 accordingly.
 
 ``` r
-# Generate a synthetic rainfall dataset
-rainfall = dummyrainfall(startYear = 1950, endYear = 2023)
-
 # Create a non-stationary meteorological index under the gamma distribution assumption
-gammaIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')[["model"]]
-#> GAMLSS-RS iteration 1: Global Deviance = 4282.293 
-#> GAMLSS-RS iteration 2: Global Deviance = 4277.814 
-#> GAMLSS-RS iteration 3: Global Deviance = 4277.742 
-#> GAMLSS-RS iteration 4: Global Deviance = 4277.741 
-#> GAMLSS-RS iteration 5: Global Deviance = 4277.741
+gammaIndex = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')[["model"]]
+#> GAMLSS-RS iteration 1: Global Deviance = 3438.05 
+#> GAMLSS-RS iteration 2: Global Deviance = 3438.05
 
 # Plot the model diagnostics 
 plot(gammaIndex)
@@ -80,20 +73,20 @@ plot(gammaIndex)
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  -0.003033419 
-    #>                        variance   =  1.000969 
-    #>                coef. of skewness  =  -0.03319239 
-    #>                coef. of kurtosis  =  2.943276 
-    #> Filliben correlation coefficient  =  0.9941738 
+    #>                            mean   =  2.393075e-05 
+    #>                        variance   =  1.001673 
+    #>                coef. of skewness  =  -0.4076712 
+    #>                coef. of kurtosis  =  3.131582 
+    #> Filliben correlation coefficient  =  0.9936565 
     #> ******************************************************************
 
 ``` r
 # Create a non-stationary meteorological index under the weibull distribution assumption
-weibullIndex = computenspi(x = rainfall, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
-#> GAMLSS-RS iteration 1: Global Deviance = 4362.413 
-#> GAMLSS-RS iteration 2: Global Deviance = 4356.778 
-#> GAMLSS-RS iteration 3: Global Deviance = 4356.731 
-#> GAMLSS-RS iteration 4: Global Deviance = 4356.73
+weibullIndex = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
+#> GAMLSS-RS iteration 1: Global Deviance = 3445.451 
+#> GAMLSS-RS iteration 2: Global Deviance = 3443.97 
+#> GAMLSS-RS iteration 3: Global Deviance = 3443.957 
+#> GAMLSS-RS iteration 4: Global Deviance = 3443.956
 
 plot(weibullIndex)
 ```
@@ -102,11 +95,11 @@ plot(weibullIndex)
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.01458056 
-    #>                        variance   =  0.8981927 
-    #>                coef. of skewness  =  0.7728783 
-    #>                coef. of kurtosis  =  5.151999 
-    #> Filliben correlation coefficient  =  0.9814182 
+    #>                            mean   =  0.0066659 
+    #>                        variance   =  0.9350294 
+    #>                coef. of skewness  =  0.4489257 
+    #>                coef. of kurtosis  =  3.026621 
+    #> Filliben correlation coefficient  =  0.9922757 
     #> ******************************************************************
 
 As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS
@@ -135,8 +128,8 @@ library(gamlss)
 # Compare the two model based implementations using AIC
 GAIC(gammaIndex, weibullIndex)
 #>              df      AIC
-#> gammaIndex    4 4285.741
-#> weibullIndex  4 4364.730
+#> gammaIndex    4 3446.050
+#> weibullIndex  4 3451.956
 ```
 
 <!-- #### Data Split -->
