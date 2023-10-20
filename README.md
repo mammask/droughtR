@@ -40,68 +40,69 @@ library(droughtR)
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
-drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3325.856 
-#> GAMLSS-RS iteration 2: Global Deviance = 3325.841 
-#> GAMLSS-RS iteration 3: Global Deviance = 3325.841
+nonstatdrought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
+#> GAMLSS-RS iteration 1: Global Deviance = 3443.237 
+#> GAMLSS-RS iteration 2: Global Deviance = 3443.236
 
 # Plot NSPI
-plot(drought)
+plot(nonstatdrought)
 ```
 
 <img src="README_figs/README-unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
+
+``` r
+# Compute the stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS and the weibull distribution
+statdrought = computenspi(x = rain, stationaryspi = TRUE, spiScale = 12, dist = 'weibull')
+#> GAMLSS-RS iteration 1: Global Deviance = 3532.575 
+#> GAMLSS-RS iteration 2: Global Deviance = 3525.934 
+#> GAMLSS-RS iteration 3: Global Deviance = 3525.881 
+#> GAMLSS-RS iteration 4: Global Deviance = 3525.881
+
+# Plot SPI 
+plot(statdrought)
+```
+
+<img src="README_figs/README-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+
+### Compute the Drought Events
 
 ### Model-Based Comparison of Drought Indices
 
 Using droughtR, we can compute indices under various distribution
 assumptions and then compare their fit according to how well they
-describe the data. In the following example, we generated synthetic
-rainfall data using the gamma distribution and then we created two
-non-stationary drought indices using the gamma and weibull distributions
-accordingly.
+describe the data. Extending the previous example, we can compare the
+model residuals of the fitted model-based indices:
 
 ``` r
-# Create a non-stationary meteorological index under the gamma distribution assumption
-gammaIndex = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')[["model"]]
-#> GAMLSS-RS iteration 1: Global Deviance = 3325.856 
-#> GAMLSS-RS iteration 2: Global Deviance = 3325.841 
-#> GAMLSS-RS iteration 3: Global Deviance = 3325.841
-
-# Plot the model diagnostics 
-plot(gammaIndex)
-```
-
-<img src="README_figs/README-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
-
-    #> ******************************************************************
-    #>        Summary of the Quantile Residuals
-    #>                            mean   =  3.408986e-05 
-    #>                        variance   =  1.001675 
-    #>                coef. of skewness  =  -0.1349683 
-    #>                coef. of kurtosis  =  2.89866 
-    #> Filliben correlation coefficient  =  0.9976263 
-    #> ******************************************************************
-
-``` r
-# Create a non-stationary meteorological index under the weibull distribution assumption
-weibullIndex = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
-#> GAMLSS-RS iteration 1: Global Deviance = 3387.442 
-#> GAMLSS-RS iteration 2: Global Deviance = 3383.89 
-#> GAMLSS-RS iteration 3: Global Deviance = 3383.851 
-#> GAMLSS-RS iteration 4: Global Deviance = 3383.85
-
-plot(weibullIndex)
+# Plot the model diagnostics of the non-stationary index 
+plot(nonstatdrought[['model']])
 ```
 
 <img src="README_figs/README-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.01316462 
-    #>                        variance   =  0.8946264 
-    #>                coef. of skewness  =  0.7574736 
-    #>                coef. of kurtosis  =  3.754292 
-    #> Filliben correlation coefficient  =  0.9827289 
+    #>                            mean   =  -3.325032e-07 
+    #>                        variance   =  1.001672 
+    #>                coef. of skewness  =  0.04019355 
+    #>                coef. of kurtosis  =  2.679767 
+    #> Filliben correlation coefficient  =  0.9980139 
+    #> ******************************************************************
+
+``` r
+# Plot the model diagnostics of the stationary index 
+plot(statdrought[['model']])
+```
+
+<img src="README_figs/README-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+
+    #> ******************************************************************
+    #>        Summary of the Quantile Residuals
+    #>                            mean   =  0.01263389 
+    #>                        variance   =  0.8900333 
+    #>                coef. of skewness  =  0.7951498 
+    #>                coef. of kurtosis  =  3.485156 
+    #> Filliben correlation coefficient  =  0.9791193 
     #> ******************************************************************
 
 As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS
@@ -128,10 +129,10 @@ library(gamlss)
 #> Type gamlssNews() to see new features/changes/bug fixes.
 
 # Compare the two model based implementations using AIC
-GAIC(gammaIndex, weibullIndex)
-#>              df      AIC
-#> gammaIndex    4 3333.841
-#> weibullIndex  4 3391.850
+GAIC(nonstatdrought[['model']], statdrought[['model']])
+#>                           df      AIC
+#> nonstatdrought[["model"]]  4 3451.236
+#> statdrought[["model"]]     2 3529.881
 ```
 
 <!-- #### Data Split -->

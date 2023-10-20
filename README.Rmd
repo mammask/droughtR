@@ -40,7 +40,7 @@ devtools::install_github("mammask/droughtR")
 
 The function `computenspi` creates stationary and non-stationary meteorological drought indices at different time scales. By default, droughtR uses the gamma distribution:
 
-```{r, eval=TRUE, fig.height=3, fig.width=8, fig.align='center'}
+```{r, eval=TRUE, fig.height=3, fig.width=9, fig.align='center'}
 # Load droughtR library
 library(droughtR)
 
@@ -48,31 +48,33 @@ library(droughtR)
 rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
-drought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
+nonstatdrought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
 
 # Plot NSPI
-plot(drought)
+plot(nonstatdrought)
 ```
+
+```{r, fig.height=3, fig.width=9, fig.align='center'}
+# Compute the stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS and the weibull distribution
+statdrought = computenspi(x = rain, stationaryspi = TRUE, spiScale = 12, dist = 'weibull')
+
+# Plot SPI 
+plot(statdrought)
+```
+
+### Compute the Drought Events
 
 ### Model-Based Comparison of Drought Indices
 
-Using droughtR, we can compute indices under various distribution assumptions and then compare their fit according to how well they describe the data. In the following example, we generated synthetic rainfall data using the gamma distribution and then we created two non-stationary drought indices using the gamma and weibull distributions accordingly.
+Using droughtR, we can compute indices under various distribution assumptions and then compare their fit according to how well they describe the data. Extending the previous example, we can compare the model residuals of the fitted model-based indices: 
 
 ```{r, eval=TRUE, fig.align='center'}
-# Create a non-stationary meteorological index under the gamma distribution assumption
-gammaIndex = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')[["model"]]
-
-# Plot the model diagnostics 
-plot(gammaIndex)
-
+# Plot the model diagnostics of the non-stationary index 
+plot(nonstatdrought[['model']])
 ```
-
-
 ```{r, eval=TRUE, fig.align='center'}
-# Create a non-stationary meteorological index under the weibull distribution assumption
-weibullIndex = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'weibull')$model
-
-plot(weibullIndex)
+# Plot the model diagnostics of the stationary index 
+plot(statdrought[['model']])
 ```
 
 As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS model residuals suggest that the non-stationary index under the gamma distribution has a better fit.
@@ -83,7 +85,7 @@ In this example, `GAIC()` is used to compare the two model-based drought indices
 library(gamlss)
 
 # Compare the two model based implementations using AIC
-GAIC(gammaIndex, weibullIndex)
+GAIC(nonstatdrought[['model']], statdrought[['model']])
 ```
 
 <!-- #### Data Split -->

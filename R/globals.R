@@ -7,4 +7,4 @@ utils::globalVariables(c("Rainfall","Date","SPI",
                          "Bias Corrected Class", "Bias Corrected",
                          "N", "Bias Induced Class", "Bias Induced",
                          "Fitted","id", "Error", "Index",
-                         "Distribution", "oossplit"))
+                         "Distribution", "oossplit", "Drought Class", "Year"))

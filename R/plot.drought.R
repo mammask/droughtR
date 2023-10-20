@@ -19,6 +19,10 @@
 #' @export
 plot.drought = function(x,label=TRUE, log=TRUE, type = "drought", ...){
 
+  if (base::inherits(x, "drought", which = FALSE) == FALSE){
+    stop("object class is not 'drought'")
+  }
+
   if ("SPI" %in% names(x[["drought index"]])){
     droughtindex = "SPI"
   } else {
