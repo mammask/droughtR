@@ -41,8 +41,9 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 nonstatdrought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3443.237 
-#> GAMLSS-RS iteration 2: Global Deviance = 3443.236
+#> GAMLSS-RS iteration 1: Global Deviance = 3337.271 
+#> GAMLSS-RS iteration 2: Global Deviance = 3337.209 
+#> GAMLSS-RS iteration 3: Global Deviance = 3337.209
 
 # Plot NSPI
 plot(nonstatdrought)
@@ -53,10 +54,11 @@ plot(nonstatdrought)
 ``` r
 # Compute the stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS and the weibull distribution
 statdrought = computenspi(x = rain, stationaryspi = TRUE, spiScale = 12, dist = 'weibull')
-#> GAMLSS-RS iteration 1: Global Deviance = 3532.575 
-#> GAMLSS-RS iteration 2: Global Deviance = 3525.934 
-#> GAMLSS-RS iteration 3: Global Deviance = 3525.881 
-#> GAMLSS-RS iteration 4: Global Deviance = 3525.881
+#> GAMLSS-RS iteration 1: Global Deviance = 3527.247 
+#> GAMLSS-RS iteration 2: Global Deviance = 3497.37 
+#> GAMLSS-RS iteration 3: Global Deviance = 3497.226 
+#> GAMLSS-RS iteration 4: Global Deviance = 3497.225 
+#> GAMLSS-RS iteration 5: Global Deviance = 3497.225
 
 # Plot SPI 
 plot(statdrought)
@@ -65,6 +67,18 @@ plot(statdrought)
 <img src="README_figs/README-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
 ### Compute the Drought Events
+
+`computeclass` returns the classification of drought events over time:
+
+``` r
+# Compute drought class
+indexClass = computeclass(nonstatdrought)
+
+# Plot drought events over time
+plot(indexClass)
+```
+
+<img src="README_figs/README-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 ### Model-Based Comparison of Drought Indices
 
@@ -78,15 +92,15 @@ model residuals of the fitted model-based indices:
 plot(nonstatdrought[['model']])
 ```
 
-<img src="README_figs/README-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+<img src="README_figs/README-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  -3.325032e-07 
-    #>                        variance   =  1.001672 
-    #>                coef. of skewness  =  0.04019355 
-    #>                coef. of kurtosis  =  2.679767 
-    #> Filliben correlation coefficient  =  0.9980139 
+    #>                            mean   =  -8.966769e-05 
+    #>                        variance   =  1.001663 
+    #>                coef. of skewness  =  0.1068735 
+    #>                coef. of kurtosis  =  3.919217 
+    #> Filliben correlation coefficient  =  0.9948914 
     #> ******************************************************************
 
 ``` r
@@ -94,15 +108,15 @@ plot(nonstatdrought[['model']])
 plot(statdrought[['model']])
 ```
 
-<img src="README_figs/README-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+<img src="README_figs/README-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.01263389 
-    #>                        variance   =  0.8900333 
-    #>                coef. of skewness  =  0.7951498 
-    #>                coef. of kurtosis  =  3.485156 
-    #> Filliben correlation coefficient  =  0.9791193 
+    #>                            mean   =  0.03636941 
+    #>                        variance   =  0.7929801 
+    #>                coef. of skewness  =  1.858084 
+    #>                coef. of kurtosis  =  11.40916 
+    #> Filliben correlation coefficient  =  0.9423127 
     #> ******************************************************************
 
 As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS
@@ -131,8 +145,8 @@ library(gamlss)
 # Compare the two model based implementations using AIC
 GAIC(nonstatdrought[['model']], statdrought[['model']])
 #>                           df      AIC
-#> nonstatdrought[["model"]]  4 3451.236
-#> statdrought[["model"]]     2 3529.881
+#> nonstatdrought[["model"]]  4 3345.209
+#> statdrought[["model"]]     2 3501.225
 ```
 
 <!-- #### Data Split -->
