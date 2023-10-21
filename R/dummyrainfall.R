@@ -25,18 +25,12 @@ dummyrainfall = function(startYear, endYear){
   start <- zoo::as.yearmon(base::as.Date(paste0("01-01-",startYear), "%d-%m-%Y"))
   end <- zoo::as.yearmon(base::as.Date(paste0("01-12-",endYear), "%d-%m-%Y"))
 
-  if ((base::inherits(start, "yearmon", which = FALSE) == FALSE) |
-      (base::inherits(end, "yearmon", which = FALSE) == FALSE)
-  ){
-    stop("Please use objects of class Date")
-  }
-
   if (startYear >= endYear){
     stop("startYear should not be greater or equal to endYear")
   }
 
   if ((endYear - startYear) < 30){
-    warning("Please simulate data for at least 30 years")
+    stop("Please simulate data for at least 30 years")
   }
 
   monthlyRainfall <- data.table::data.table(Date = seq(from = start, to = end, by = 0.1))

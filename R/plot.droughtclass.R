@@ -23,7 +23,7 @@
 plot.droughtclass = function(x, label=TRUE, log=TRUE, type = "droughtclass", ...){
 
   if (base::inherits(x, "droughtclass", which = FALSE) == FALSE){
-    stop("object class is not 'drought'")
+    stop("object class is not 'droughtclass'")
   }
 
   if ("SPI" %in% names(x)){

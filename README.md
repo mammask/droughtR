@@ -41,9 +41,9 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 nonstatdrought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3337.271 
-#> GAMLSS-RS iteration 2: Global Deviance = 3337.209 
-#> GAMLSS-RS iteration 3: Global Deviance = 3337.209
+#> GAMLSS-RS iteration 1: Global Deviance = 3434.017 
+#> GAMLSS-RS iteration 2: Global Deviance = 3433.998 
+#> GAMLSS-RS iteration 3: Global Deviance = 3433.998
 
 # Plot NSPI
 plot(nonstatdrought)
@@ -54,11 +54,10 @@ plot(nonstatdrought)
 ``` r
 # Compute the stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS and the weibull distribution
 statdrought = computenspi(x = rain, stationaryspi = TRUE, spiScale = 12, dist = 'weibull')
-#> GAMLSS-RS iteration 1: Global Deviance = 3527.247 
-#> GAMLSS-RS iteration 2: Global Deviance = 3497.37 
-#> GAMLSS-RS iteration 3: Global Deviance = 3497.226 
-#> GAMLSS-RS iteration 4: Global Deviance = 3497.225 
-#> GAMLSS-RS iteration 5: Global Deviance = 3497.225
+#> GAMLSS-RS iteration 1: Global Deviance = 3462.996 
+#> GAMLSS-RS iteration 2: Global Deviance = 3460.185 
+#> GAMLSS-RS iteration 3: Global Deviance = 3460.16 
+#> GAMLSS-RS iteration 4: Global Deviance = 3460.16
 
 # Plot SPI 
 plot(statdrought)
@@ -96,11 +95,11 @@ plot(nonstatdrought[['model']])
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  -8.966769e-05 
-    #>                        variance   =  1.001663 
-    #>                coef. of skewness  =  0.1068735 
-    #>                coef. of kurtosis  =  3.919217 
-    #> Filliben correlation coefficient  =  0.9948914 
+    #>                            mean   =  -3.321116e-05 
+    #>                        variance   =  1.001667 
+    #>                coef. of skewness  =  -0.2636465 
+    #>                coef. of kurtosis  =  2.786398 
+    #> Filliben correlation coefficient  =  0.9970285 
     #> ******************************************************************
 
 ``` r
@@ -112,11 +111,11 @@ plot(statdrought[['model']])
 
     #> ******************************************************************
     #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.03636941 
-    #>                        variance   =  0.7929801 
-    #>                coef. of skewness  =  1.858084 
-    #>                coef. of kurtosis  =  11.40916 
-    #> Filliben correlation coefficient  =  0.9423127 
+    #>                            mean   =  0.008349489 
+    #>                        variance   =  0.9233062 
+    #>                coef. of skewness  =  0.5433075 
+    #>                coef. of kurtosis  =  3.27711 
+    #> Filliben correlation coefficient  =  0.9910283 
     #> ******************************************************************
 
 As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS
@@ -145,8 +144,8 @@ library(gamlss)
 # Compare the two model based implementations using AIC
 GAIC(nonstatdrought[['model']], statdrought[['model']])
 #>                           df      AIC
-#> nonstatdrought[["model"]]  4 3345.209
-#> statdrought[["model"]]     2 3501.225
+#> nonstatdrought[["model"]]  4 3441.998
+#> statdrought[["model"]]     2 3464.160
 ```
 
 <!-- #### Data Split -->

@@ -29,6 +29,15 @@
 #'             dist = 'gamma'
 #'             )
 computenspi = function(x, stationaryspi, spiScale, dist='gamma'){
+
+  if (base::inherits(x,c("data.table","data.frame"),which = FALSE) == FALSE){
+    stop("x should be in data.table or data.frame format")
+  }
+
+  if (!any(names(x) %in% c("Date"))){
+    stop("x should consist of a Date column")
+  }
+
   setDT(x)
   monthlyRainfall = copy(x)
   monthlyRainfall[, Date := as.yearmon(Date)]
@@ -42,20 +51,12 @@ computenspi = function(x, stationaryspi, spiScale, dist='gamma'){
     stop("spiScale should be numeric")
   }
 
-  if (base::inherits(monthlyRainfall, "data.table", which = FALSE) == FALSE){
-    stop("monthlyRainfall is not a data.table")
-  }
-
   if (base::inherits(dist, "character", which = FALSE) == FALSE){
     stop("dist should be of type character")
   }
 
-  if (!any(names(monthlyRainfall) %in% c("Date","Rainfall"))){
-    stop("monthlyRainfall should consist of Date and Rainfall columns")
-  }
-
-  if (base::inherits(monthlyRainfall[,Date], "yearmon", which = FALSE) == FALSE){
-    stop("Date should be in yearmon format")
+  if (!any(names(monthlyRainfall) %in% c("Rainfall"))){
+    stop("x should consist of a Rainfall column")
   }
 
   # Define family distribution
@@ -79,6 +80,8 @@ computenspi = function(x, stationaryspi, spiScale, dist='gamma'){
     familyDist = gamlss.dist::WEI
     pfamilyDist = gamlss.dist::pWEI
 
+  } else {
+    stop("Not supported distribution")
   }
 
   # Compute accumulated precipitation
