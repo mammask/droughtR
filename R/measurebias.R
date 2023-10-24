@@ -20,6 +20,15 @@
 #' measurebias(rainfall, 0.6, 0.2, 0.2, TRUE, 12, "normal")
 measurebias = function(x, trainratio, validationratio, testratio, stationaryspi, spiscale, dist = 'gamma'){
 
+  if (base::inherits(x,c("data.table","data.frame"),which = FALSE) == FALSE){
+    stop("x should be in data.table or data.frame format")
+  }
+
+
+  if (sum(c(trainratio, validationratio, testratio)) != 1){
+    stop("the sum of the data split should be equal to 1")
+  }
+
   setDT(x)
 
   # Perform data split

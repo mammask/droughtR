@@ -70,14 +70,22 @@ test_that("check the time period is not less than 30 years in generating synthet
   )
 })
 
-test_that("chack object class in computeclass",{
+test_that("check object class in computeclass",{
   expect_error(computeclass(list()),
                "object class is not 'drought'"
   )
 })
 
+test_that("check data.table structure in measurebias", {
+  expect_error(measurebias(x = list(), trainratio = 0.6, validationratio = 0.2, testratio = 0.2, stationaryspi = T, spiscale = 12, dist = 'gamma'),
+               "x should be in data.table or data.frame format")
+})
 
 
-
+test_that("check data split ratio in measurebias",{
+  expect_error(measurebias(x = dummyrainfall(1950, 2000),
+                           trainratio = 1, validationratio = 0.2, testratio = 0.2, stationaryspi = T, spiscale = 12, dist = 'gamma'),
+               "the sum of the data split should be equal to 1")
+})
 
 
