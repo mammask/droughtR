@@ -65,41 +65,45 @@ statdrought = computenspi(x = rain, stationaryspi = TRUE, spiScale = 12, dist = 
 plot(statdrought)
 ```
 
-### Compute the Drought Events
+<!-- ## Releases -->
 
-`computeclass` returns the classification of drought events over time:
+<!-- ## References -->
 
-```{r, eval=TRUE, fig.height=3, fig.width=9, fig.align='center'}
-# Compute drought class
-indexClass = computeclass(nonstatdrought)
-
-# Plot drought events over time
-plot(indexClass)
-```
-
-### Model-Based Comparison of Drought Indices
-
-Using droughtR, we can compute indices under various distribution assumptions and then compare their fit according to how well they describe the data. Extending the previous example, we can compare the model residuals of the fitted model-based indices: 
-
-```{r, eval=TRUE, fig.align='center'}
-# Plot the model diagnostics of the non-stationary index 
-plot(nonstatdrought[['model']])
-```
-```{r, eval=TRUE, fig.align='center'}
-# Plot the model diagnostics of the stationary index 
-plot(statdrought[['model']])
-```
-
-As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS model residuals suggest that the non-stationary index under the gamma distribution has a better fit.
-
-In this example, `GAIC()` is used to compare the two model-based drought indices using the AIC:
-
-```{r, eval = TRUE}
-library(gamlss)
-
-# Compare the two model based implementations using AIC
-GAIC(nonstatdrought[['model']], statdrought[['model']])
-```
+<!-- # ### Compute the Drought Events -->
+<!-- #  -->
+<!-- # `computeclass` returns the classification of drought events over time: -->
+<!-- #  -->
+<!-- # ```{r, eval=TRUE, fig.height=3, fig.width=9, fig.align='center'} -->
+<!-- # # Compute drought class -->
+<!-- # indexClass = computeclass(nonstatdrought) -->
+<!-- #  -->
+<!-- # # Plot drought events over time -->
+<!-- # plot(indexClass) -->
+<!-- # ``` -->
+<!-- #  -->
+<!-- # ### Model-Based Comparison of Drought Indices -->
+<!-- #  -->
+<!-- # Using droughtR, we can compute indices under various distribution assumptions and then compare their fit according to how well they describe the data. Extending the previous example, we can compare the model residuals of the fitted model-based indices:  -->
+<!-- #  -->
+<!-- # ```{r, eval=TRUE, fig.align='center'} -->
+<!-- # # Plot the model diagnostics of the non-stationary index  -->
+<!-- # plot(nonstatdrought[['model']]) -->
+<!-- # ``` -->
+<!-- # ```{r, eval=TRUE, fig.align='center'} -->
+<!-- # # Plot the model diagnostics of the stationary index  -->
+<!-- # plot(statdrought[['model']]) -->
+<!-- # ``` -->
+<!-- #  -->
+<!-- # As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS model residuals suggest that the non-stationary index under the gamma distribution has a better fit. -->
+<!-- #  -->
+<!-- # In this example, `GAIC()` is used to compare the two model-based drought indices using the AIC: -->
+<!-- #  -->
+<!-- # ```{r, eval = TRUE} -->
+<!-- # library(gamlss) -->
+<!-- #  -->
+<!-- # # Compare the two model based implementations using AIC -->
+<!-- # GAIC(nonstatdrought[['model']], statdrought[['model']]) -->
+<!-- ``` -->
 
 <!-- #### Data Split -->
 

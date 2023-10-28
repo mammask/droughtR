@@ -45,10 +45,9 @@ rain = dummyrainfall(startYear = 1950, endYear = 2010)
 
 # Compute the non-stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS
 nonstatdrought = computenspi(x = rain, stationaryspi = FALSE, spiScale = 12, dist = 'gamma')
-#> GAMLSS-RS iteration 1: Global Deviance = 3465.44 
-#> GAMLSS-RS iteration 2: Global Deviance = 3464.622 
-#> GAMLSS-RS iteration 3: Global Deviance = 3464.62 
-#> GAMLSS-RS iteration 4: Global Deviance = 3464.62
+#> GAMLSS-RS iteration 1: Global Deviance = 3460.033 
+#> GAMLSS-RS iteration 2: Global Deviance = 3460.018 
+#> GAMLSS-RS iteration 3: Global Deviance = 3460.018
 
 # Plot NSPI
 plot(nonstatdrought)
@@ -59,11 +58,10 @@ plot(nonstatdrought)
 ``` r
 # Compute the stationary standardized precipitation index (NSPI) for scale 12 using GAMLSS and the weibull distribution
 statdrought = computenspi(x = rain, stationaryspi = TRUE, spiScale = 12, dist = 'weibull')
-#> GAMLSS-RS iteration 1: Global Deviance = 3628.814 
-#> GAMLSS-RS iteration 2: Global Deviance = 3614.517 
-#> GAMLSS-RS iteration 3: Global Deviance = 3614.421 
-#> GAMLSS-RS iteration 4: Global Deviance = 3614.42 
-#> GAMLSS-RS iteration 5: Global Deviance = 3614.419
+#> GAMLSS-RS iteration 1: Global Deviance = 3545.498 
+#> GAMLSS-RS iteration 2: Global Deviance = 3539.194 
+#> GAMLSS-RS iteration 3: Global Deviance = 3539.143 
+#> GAMLSS-RS iteration 4: Global Deviance = 3539.143
 
 # Plot SPI 
 plot(statdrought)
@@ -71,89 +69,43 @@ plot(statdrought)
 
 <img src="README_figs/README-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
-### Compute the Drought Events
-
-`computeclass` returns the classification of drought events over time:
-
-``` r
-# Compute drought class
-indexClass = computeclass(nonstatdrought)
-
-# Plot drought events over time
-plot(indexClass)
-```
-
-<img src="README_figs/README-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
-
-### Model-Based Comparison of Drought Indices
-
-Using droughtR, we can compute indices under various distribution
-assumptions and then compare their fit according to how well they
-describe the data. Extending the previous example, we can compare the
-model residuals of the fitted model-based indices:
-
-``` r
-# Plot the model diagnostics of the non-stationary index 
-plot(nonstatdrought[['model']])
-```
-
-<img src="README_figs/README-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
-
-    #> ******************************************************************
-    #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.001116699 
-    #>                        variance   =  1.001811 
-    #>                coef. of skewness  =  0.3015149 
-    #>                coef. of kurtosis  =  2.652408 
-    #> Filliben correlation coefficient  =  0.9939833 
-    #> ******************************************************************
-
-``` r
-# Plot the model diagnostics of the stationary index 
-plot(statdrought[['model']])
-```
-
-<img src="README_figs/README-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
-
-    #> ******************************************************************
-    #>        Summary of the Quantile Residuals
-    #>                            mean   =  0.01966283 
-    #>                        variance   =  0.8501543 
-    #>                coef. of skewness  =  1.139775 
-    #>                coef. of kurtosis  =  4.416206 
-    #> Filliben correlation coefficient  =  0.9608373 
-    #> ******************************************************************
-
-As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS
-model residuals suggest that the non-stationary index under the gamma
-distribution has a better fit.
-
-In this example, `GAIC()` is used to compare the two model-based drought
-indices using the AIC:
-
-``` r
-library(gamlss)
-#> Loading required package: splines
-#> Loading required package: gamlss.data
-#> 
-#> Attaching package: 'gamlss.data'
-#> The following object is masked from 'package:datasets':
-#> 
-#>     sleep
-#> Loading required package: gamlss.dist
-#> Loading required package: nlme
-#> Loading required package: parallel
-#>  **********   GAMLSS Version 5.4-20  **********
-#> For more on GAMLSS look at https://www.gamlss.com/
-#> Type gamlssNews() to see new features/changes/bug fixes.
-
-# Compare the two model based implementations using AIC
-GAIC(nonstatdrought[['model']], statdrought[['model']])
-#>                           df     AIC
-#> nonstatdrought[["model"]]  4 3472.62
-#> statdrought[["model"]]     2 3618.42
-```
-
+<!-- ## Releases -->
+<!-- ## References -->
+<!-- # ### Compute the Drought Events -->
+<!-- #  -->
+<!-- # `computeclass` returns the classification of drought events over time: -->
+<!-- #  -->
+<!-- # ```{r, eval=TRUE, fig.height=3, fig.width=9, fig.align='center'} -->
+<!-- # # Compute drought class -->
+<!-- # indexClass = computeclass(nonstatdrought) -->
+<!-- #  -->
+<!-- # # Plot drought events over time -->
+<!-- # plot(indexClass) -->
+<!-- # ``` -->
+<!-- #  -->
+<!-- # ### Model-Based Comparison of Drought Indices -->
+<!-- #  -->
+<!-- # Using droughtR, we can compute indices under various distribution assumptions and then compare their fit according to how well they describe the data. Extending the previous example, we can compare the model residuals of the fitted model-based indices:  -->
+<!-- #  -->
+<!-- # ```{r, eval=TRUE, fig.align='center'} -->
+<!-- # # Plot the model diagnostics of the non-stationary index  -->
+<!-- # plot(nonstatdrought[['model']]) -->
+<!-- # ``` -->
+<!-- # ```{r, eval=TRUE, fig.align='center'} -->
+<!-- # # Plot the model diagnostics of the stationary index  -->
+<!-- # plot(statdrought[['model']]) -->
+<!-- # ``` -->
+<!-- #  -->
+<!-- # As presented in the diagnostic charts, the Normal Q-Q plot of the GAMLSS model residuals suggest that the non-stationary index under the gamma distribution has a better fit. -->
+<!-- #  -->
+<!-- # In this example, `GAIC()` is used to compare the two model-based drought indices using the AIC: -->
+<!-- #  -->
+<!-- # ```{r, eval = TRUE} -->
+<!-- # library(gamlss) -->
+<!-- #  -->
+<!-- # # Compare the two model based implementations using AIC -->
+<!-- # GAIC(nonstatdrought[['model']], statdrought[['model']]) -->
+<!-- ``` -->
 <!-- #### Data Split -->
 <!-- The `oossplit` function splits the data into train, validation and test sets: -->
 <!-- ```{r, eval=TRUE} -->
