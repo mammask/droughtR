@@ -14,7 +14,6 @@ authors:
 affiliations:
  - name: University of the Aegean, Department of Environment, Greece
    index: 1
-date: 11 November 2023
 bibliography: references.bib
 ---
 
@@ -68,16 +67,26 @@ Equivalently, the stationary version of SPI is computed as follows:
 
 ```{r}
 # calculate NSPI
-nspi = computenspi(monthlyRainfall = rain, stationaryspi = TRUE, spiScale = 12)
+spi = computenspi(monthlyRainfall = rain, stationaryspi = TRUE, spiScale = 12)
 
 # plot results
-plot(nspi)
+plot(spi)
 ```
 
 ![](../README_figs/README-unnamed-chunk-4-1.png){style="display: block; margin: 0 auto"}
 
 
-#### Model-Based Comparison Between Different Indices
+#### Visualize drought events over time
+
+The classification of drought events can be visualized over time:
+
+```{r}
+# Build a graph with drought events over time
+indexClass = computeclass(mIndex)
+
+plot(indexClass)
+```
+![](../README_figs/README-unnamed-chunk-5-1.png){style="display: block; margin: 0 auto"}
 
 
 ### References
