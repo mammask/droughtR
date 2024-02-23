@@ -16,8 +16,8 @@
 #'                 spiScale = 12,
 #'                 dist = 'gamma')
 #'
-#'                 computeclass(mIndex)
-#' plot(mIndex)
+#'                 indexClass = computeclass(mIndex)
+#' plot(indexClass)
 #' @export
 
 plot.droughtclass = function(x, label=TRUE, log=TRUE, type = "droughtclass", ...){

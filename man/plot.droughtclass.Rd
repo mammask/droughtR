@@ -29,6 +29,6 @@ mIndex = computenspi(x = dummyrainfall(1950, 2000),
                 spiScale = 12,
                 dist = 'gamma')
 
-                computeclass(mIndex)
-plot(mIndex)
+                indexClass = computeclass(mIndex)
+plot(indexClass)
 }
