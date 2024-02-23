@@ -16,8 +16,8 @@
 #'                 spiScale = 12,
 #'                 dist = 'gamma')
 #'
-#'                 computeclass(mIndex)
-#' plot(mIndex)
+#'                 indexClass = computeclass(mIndex)
+#' plot(indexClass)
 #' @export
 
 plot.droughtclass = function(x, label=TRUE, log=TRUE, type = "droughtclass", ...){
@@ -40,7 +40,7 @@ plot.droughtclass = function(x, label=TRUE, log=TRUE, type = "droughtclass", ...
                                                                          "Moderately Dry",
                                                                          "Very Dry",
                                                                          "Extremely Dry"
-                                                                         ))]
+  ))]
 
   ggplot(data = droughtsummary, aes(x = Year, y = N, fill = `Drought Class`)) + geom_col(color = "black") +
     scale_fill_brewer(palette = 1, direction = -1) +
